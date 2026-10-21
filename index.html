@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-bdy08dEUv1psjHN0hFTo0C1aQYRTlORcARzRhWHdXao=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-fNokw0CXLEVlUoEHJ+S6jOJ56zjkfkr726hgoV/rmlk=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-BHigUXfNx0Gu5JpBbSI1Ums4d3YTodbSHV51Rz95K5Q=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-OWqYaOOiummKkoTw5BmZz2F/3iE6Krab63OV+n5TE5I=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#0a0a0b">
 <meta name="description" content="CYBERJAY Holdings: a house of businesses. Network, systems and security equipment, services and resale in Nairobi.">
@@ -116,6 +116,9 @@ textarea{width:100%;min-height:220px;padding:1rem;border-radius:18px;border:1px 
 .chat{display:flex;flex-direction:column;gap:.5rem;max-height:300px;overflow:auto;margin:.8rem 0}.msg{max-width:80%;padding:.5rem .9rem;border-radius:18px;background:var(--bg2);align-self:flex-start;display:flex;flex-direction:column}.msg.me{align-self:flex-end;background:color-mix(in srgb,var(--ac) 22%,var(--bg2))}.msg small{color:var(--mut);font-size:.7rem}
 .mini{display:grid;gap:.15rem;font-size:.7rem;color:var(--mut)}.rw .mini input{width:96px}
 @media(max-width:400px){.logo{font-size:.86rem}.menu a{padding:.35rem .38rem;font-size:.66rem}.ib{width:34px;height:34px}.hdr{padding-left:12px;padding-right:8px}}
+.vf{color:var(--acT);border-color:var(--ac)}.idimg{max-width:100%;border-radius:14px;margin-top:.6rem}
+input[type=search]{width:100%;margin:0 0 1.2rem;padding:.85rem 1.3rem;border-radius:99px;border:1px solid var(--line);background:var(--card);color:var(--tx)}
+.frm select{padding:.7rem 1rem;border-radius:18px;border:1px solid var(--line);background:var(--bg);color:var(--tx)}
 </style>
 </head>
 <body>
@@ -172,7 +175,13 @@ textarea{width:100%;min-height:220px;padding:1rem;border-radius:18px;border:1px 
  "btnJoin": "Register your business",
  "joinEyebrow": "Join CYBERJAY Holdings",
  "joinTitle": "Register your business",
- "joinLead": "Fill in your details. The holding admin will verify your business before it appears on the site. You can log in meanwhile to prepare your stock."
+ "joinLead": "Fill in your details. The holding admin will verify your business before it appears on the site. You can log in meanwhile to prepare your stock.",
+ "searchPh": "Search businesses, products or places...",
+ "priceFree": "Free",
+ "priceStandard": "KES 449 / month",
+ "pricePremium": "KES 999 / month",
+ "payNote": "Pay the holding admin as agreed (M-Pesa or WhatsApp). When he confirms your payment he activates your plan.",
+ "holdingWa": "+254714066258"
 }
 </script>
 <header class="hdr"><a class="logo" href="#/">CYBER<span>JAY</span></a><nav class="menu" id="menu"><a href="#/" data-r="home">Businesses</a><a href="#/about" data-r="about">About</a><a href="#/chamber" data-r="chamber">Admin login</a></nav><button class="ib" id="st" aria-label="Appearance settings" aria-expanded="false">Aa</button></header>
@@ -190,11 +199,12 @@ let S={biz:[]},me=null,tab="stock",flash="",tip="",timer=0,idle=0,ready=false,fa
 const sb=window.supabase?window.supabase.createClient(SB_URL,SB_KEY,{auth:{storage:window.sessionStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}}):null;
 let last=0,sig="";
 const TX=(()=>{try{return JSON.parse(document.getElementById("txt").textContent)}catch(e){return{}}})(),T=(k,d)=>typeof TX[k]==="string"&&TX[k].trim()?TX[k]:d,pub=()=>S.biz.filter(x=>!x.hidden&&x.approved);
+const PL={free:{n:"Free",lim:3},standard:{n:"Standard",lim:15},premium:{n:"Premium",lim:Infinity}},RK={free:1,standard:2,premium:3},vb=()=>h("span","chip vf","\u2713 Verified seller"),ranked=()=>[...pub()].sort((a,b)=>RK[b.plan]-RK[a.plan]),bannerList=()=>{const p=ranked().filter(x=>x.plan==="premium");return p.length?p:ranked()};
 async function refresh(){if(!sb){fail="Could not load the database library.";return false}
 const [a,b]=await Promise.all([sb.from("businesses").select("*").order("sort").order("created_at"),sb.from("items").select("*")]);
 if(a.error||b.error){fail="Could not load data. Please refresh.";return false}fail="";
-const n=a.data.map(x=>({id:x.slug,hidden:!!x.hidden,approved:x.approved!==false,bp:x.banner||"",banner:x.banner?SB_URL+"/storage/v1/object/public/item-photos/"+x.banner.split("/").map(encodeURIComponent).join("/"):"",uid:x.id,name:x.name,tag:x.tag,sells:x.sells,ceo:x.ceo,loc:x.loc,hrs:x.hrs,since:x.since,wa:x.wa,ig:x.ig,services:x.services||[],
-items:b.data.filter(i=>i.business_id===x.id).map(i=>({id:i.id,n:i.name,p:i.price,img:i.img?SB_URL+"/storage/v1/object/public/item-photos/"+i.img.split("/").map(encodeURIComponent).join("/"):"",sold:i.sold,q:i.qty,sq:i.sold_qty,rv:Number(i.revenue),t:Date.parse(i.listed_at),s:i.sold_at?Date.parse(i.sold_at):0}))}));last=Date.now();const g=JSON.stringify(n),ch=g!==sig;sig=g;S.biz=n;ready=true;try{sessionStorage.setItem("cj-c3",g)}catch(e){}return ch}
+const n=a.data.map(x=>({id:x.slug,hidden:!!x.hidden,approved:x.approved!==false,plan:PL[x.plan]?x.plan:"free",verified:!!x.verified,bp:x.banner||"",banner:x.banner?SB_URL+"/storage/v1/object/public/item-photos/"+x.banner.split("/").map(encodeURIComponent).join("/"):"",uid:x.id,name:x.name,tag:x.tag,sells:x.sells,ceo:x.ceo,loc:x.loc,hrs:x.hrs,since:x.since,wa:x.wa,ig:x.ig,services:x.services||[],
+items:b.data.filter(i=>i.business_id===x.id).map(i=>({id:i.id,n:i.name,p:i.price,img:i.img?SB_URL+"/storage/v1/object/public/item-photos/"+i.img.split("/").map(encodeURIComponent).join("/"):"",sold:i.sold,q:i.qty,sq:i.sold_qty,rv:Number(i.revenue),t:Date.parse(i.listed_at),s:i.sold_at?Date.parse(i.sold_at):0}))}));last=Date.now();const g=JSON.stringify(n),ch=g!==sig;sig=g;S.biz=n;ready=true;try{sessionStorage.setItem("cj-c4",g)}catch(e){}return ch}
 const $=s=>document.querySelector(s),app=$("#app");
 const h=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
 const P={ig:'<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>',
@@ -208,7 +218,7 @@ const kes=n=>"KES "+Number(n).toLocaleString("en-KE"),age=t=>Math.max(0,Math.flo
 const ph=n=>{const t=n.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase().replace(/[^A-Z0-9]/g,"");
 return "data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c1c20"/><stop offset="1" stop-color="#3a1a05"/></linearGradient></defs><rect width="400" height="300" fill="url(#g)"/><path d="M0 220c80-40 140 30 220-10s120-40 180 0V300H0z" fill="#ff6a00" opacity=".18"/><text x="200" y="175" font-size="84" font-weight="700" text-anchor="middle" fill="#fff" opacity=".85" font-family="sans-serif">'+t+'</text></svg>')};
 const safeImg=u=>typeof u==="string"&&(/^(https:\/\/|assets\/)[\w\-./%:?=&~]+$/.test(u)||/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(u))?u:null;
-const contact=(b,m)=>{const d=h("div","soc");d.append(ext(wa(b,m),"Chat with "+b.name+" on WhatsApp","wa"),ext(igu(b),b.name+" on Instagram","ig"));return d};
+const contact=(b,m)=>{const d=h("div","soc");d.append(ext(wa(b,m),"Chat with "+b.name+" on WhatsApp","wa"));if(b.plan!=="free")d.append(ext(igu(b),b.name+" on Instagram","ig"));return d};
 const stats=b=>{const i=b.items.filter(x=>!x.sold),s=b.items.filter(x=>x.sold);return{i,s,units:i.reduce((a,x)=>a+x.q,0),val:i.reduce((a,x)=>a+x.p*x.q,0),rev:b.items.reduce((a,x)=>a+x.rv,0),usold:b.items.reduce((a,x)=>a+x.sq,0),avg:s.length?Math.round(s.reduce((a,x)=>a+(x.s-x.t)/D,0)/s.length):0,slow:i.filter(x=>age(x.t)>30).length}};
 
 /* ---------- appearance ---------- */
@@ -224,16 +234,16 @@ addEventListener("keydown",e=>{if(e.key==="Escape")p.hidden=true});applyPf()})()
 /* ---------- storefront ---------- */
 function slider(){const w=h("div","slw"),car=h("div","car"),dots=h("div","dots");let ix=0;
 const go=i=>{ix=i;car.scrollTo({left:i*car.clientWidth,behavior:"smooth"})},mark=()=>{const i=Math.round(car.scrollLeft/car.clientWidth);[...dots.children].forEach((d,k)=>d.classList.toggle("on",k===i));ix=i};
-pub().forEach((b,i)=>{const a=h("a","sl");a.href="#/b/"+b.id;const bn=safeImg(b.banner),ps=bn?[bn]:[...new Set([...b.items].sort((x,y)=>x.sold-y.sold).map(x=>safeImg(x.img)).filter(Boolean))].slice(0,2),pics=ps.map((u,k)=>{const m=h("img",ps.length===2?"p"+(k+1):"");m.src=u;m.alt=b.name;return m});if(!pics.length){const m=h("img");m.src=ph(b.name);m.alt=b.name;pics.push(m)}const o=h("div","ov");o.append(h("span","eyebrow",b.tag),h("h3","",b.name),h("p","",b.sells),h("span","btn p",T("shopNow","Shop now")));a.append(...pics);if(ps.length===2)a.append(h("div","cut"));a.append(o);car.append(a);const d=h("button","dot");d.setAttribute("aria-label","Show "+b.name);d.addEventListener("click",()=>go(i));dots.append(d)});
-car.addEventListener("scroll",mark);if(!matchMedia("(prefers-reduced-motion:reduce)").matches)timer=setInterval(()=>go((ix+1)%pub().length),4500);setTimeout(mark,0);w.append(car,dots);return w}
+bannerList().forEach((b,i)=>{const a=h("a","sl");a.href="#/b/"+b.id;const bn=safeImg(b.banner),ps=bn?[bn]:[...new Set([...b.items].sort((x,y)=>x.sold-y.sold).map(x=>safeImg(x.img)).filter(Boolean))].slice(0,2),pics=ps.map((u,k)=>{const m=h("img",ps.length===2?"p"+(k+1):"");m.src=u;m.alt=b.name;return m});if(!pics.length){const m=h("img");m.src=ph(b.name);m.alt=b.name;pics.push(m)}const o=h("div","ov");o.append(h("span","eyebrow",b.tag),h("h3","",b.name),...(b.verified?[vb()]:[]),h("p","",b.sells),h("span","btn p",T("shopNow","Shop now")));a.append(...pics);if(ps.length===2)a.append(h("div","cut"));a.append(o);car.append(a);const d=h("button","dot");d.setAttribute("aria-label","Show "+b.name);d.addEventListener("click",()=>go(i));dots.append(d)});
+car.addEventListener("scroll",mark);if(!matchMedia("(prefers-reduced-motion:reduce)").matches)timer=setInterval(()=>go((ix+1)%bannerList().length),4500);setTimeout(mark,0);w.append(car,dots);return w}
 function home(){const f=document.createDocumentFragment(),s=h("section","hero"),w=h("div","wrap");
 w.append(h("p","eyebrow",T("eyebrow","CYBERJAY Holdings \u00b7 Nairobi")));
 const t=h("h1");t.append(T("line1","One house."),document.createElement("br"));t.append(h("em","",pub().length+T("line2"," businesses.")));
 w.append(t,h("p","lead",T("lead","Browse what is on sale, build your shopping list, and finish the purchase on WhatsApp with the business owner.")));
 const r=h("div","row"),b1=h("button","btn p",T("btnExplore","Explore businesses"));b1.dataset.scroll="biz";b1.append(ic("ar"));const a2=h("a","btn g",T("btnLogin","Business login"));a2.href="#/chamber";a2.prepend(ic("lk"));const a3=h("a","btn g",T("btnJoin","Register your business"));a3.href="#/join";r.append(b1,a2,a3);w.append(r,slider());s.append(w);
 const sh=h("section","sheet");sh.id="biz";const sw=h("div","wrap"),hd=h("div","sh");hd.append(h("h2","",T("bizTitle","Our businesses")),h("p","",T("bizSub","Each business runs its own storefront, stock and contact line under the CYBERJAY name.")));
-const g=h("div","grid");pub().forEach((b,i)=>{const a=h("a","card slot");a.href="#/b/"+b.id;a.append(h("span","num","0"+(i+1)),h("h3","",b.name),h("span","chip",b.tag),h("p","",b.sells),h("span","chip",stats(b).units+T("inStock"," in stock")));const go=h("span","go",T("visit","Visit business"));go.append(ic("ar"));a.append(go);g.append(a)});
-sw.append(hd,g);sh.append(sw);f.append(s,sh);return f}
+const g=h("div","grid"),sq=h("input");sq.type="search";sq.autocomplete="off";sq.maxLength=60;sq.placeholder=T("searchPh","Search businesses, products or places...");sq.setAttribute("aria-label","Search");sq.addEventListener("input",()=>fill());
+const fill=()=>{g.replaceChildren();const qq=sq.value.trim().toLowerCase();ranked().filter(b=>!qq||[b.name,b.tag,b.sells,b.loc].join(" ").toLowerCase().includes(qq)||b.items.some(x=>x.n.toLowerCase().includes(qq))).forEach((b,i)=>{const a=h("a","card slot");a.href="#/b/"+b.id;a.append(h("span","num","0"+(i+1)),h("h3","",b.name),...(b.verified?[vb()]:[]),h("span","chip",b.tag),h("p","",b.sells),h("span","chip",stats(b).units+T("inStock"," in stock")));const go=h("span","go",T("visit","Visit business"));go.append(ic("ar"));a.append(go);g.append(a)});if(!g.children.length)g.append(h("p","mut","No businesses match your search."))};fill();sw.append(hd,sq,g);sh.append(sw);f.append(s,sh);return f}
 function tog(b,x){const a=cart[b.id]=cart[b.id]||[],i=a.indexOf(x.id);if(i<0)a.push(x.id);else a.splice(i,1);route(true)}
 function cartAdd(b,x,d){const a=cart[b.id]=cart[b.id]||[];if(d>0){if(a.filter(z=>z===x.id).length<x.q)a.push(x.id)}else{const i=a.indexOf(x.id);if(i>=0)a.splice(i,1)}route(true)}
 function cartCard(b){const ids=cart[b.id]||[],u=[...new Set(ids)].map(i=>b.items.find(x=>x.id===i)).filter(x=>x&&!x.sold);if(!u.length)return null;
@@ -244,7 +254,7 @@ const msg="Hello "+b.name+", I would like to buy:\n"+u.map((x,i)=>(i+1)+". "+n(x
 c.append(ext(wa(b,msg),"Purchase on WhatsApp","wa",T("purchase"," Purchase on WhatsApp"),"btn p"));return c}
 function biz(b){const f=document.createDocumentFragment(),s=h("section","hero"),w=h("div","wrap");
 const back=h("a","chip",T("back","\u2190 All businesses"));back.href="#/";
-w.append(back,h("h1","",b.name),h("p","eyebrow",b.tag),h("p","lead",b.sells));
+w.append(back,h("h1","",b.name),...(b.verified?[vb()]:[]),h("p","eyebrow",b.tag),h("p","lead",b.sells));
 const r=h("div","row");r.append(contact(b,"Hello "+b.name+", I would like to enquire."));w.append(r);
 const sb=h("div","sub");[[T("navServices","Services"),"svc"],[T("navGallery","Gallery"),"gal"]].forEach(([l,id])=>{const x=h("button","btn g",l);x.dataset.scroll=id;sb.append(x)});w.append(sb);s.append(w);
 const s1=h("section","sheet");s1.id="svc";const w1=h("div","wrap"),d=h("div","card det");
@@ -267,7 +277,12 @@ sw.append(g);sh.append(sw);f.append(s,sh);return f}
 const bump=()=>{clearTimeout(idle);if(me)idle=setTimeout(async()=>{await sb.auth.signOut();me=null;paint()},6e5)};
 addEventListener("click",bump);addEventListener("keydown",bump);
 function form(fs,btn,fn){const c=h("div","card frm"),m=h("p","err"),ins={};m.setAttribute("role","status");
-fs.forEach(([k,l,t,v])=>{const lb=h("label","",l),i=h("input");i.type=t||"text";i.autocomplete=t==="password"?(k==="p"?"current-password":"new-password"):"off";if(t==="number"){i.min=0;i.step=1}else if(t==="file")i.accept="image/jpeg,image/png,image/webp";else i.maxLength=200;if(v!=null&&t!=="file"&&t!=="password")i.value=v;lb.append(i);c.append(lb);ins[k]=i});
+fs.forEach(([k,l,t,v,op])=>{const lb=h("label","",l),i=h(t==="select"?"select":"input");
+if(t==="select")(op||[]).forEach(x=>{const o=h("option","",x[1]);o.value=x[0];i.append(o)});else i.type=t||"text";
+i.autocomplete=t==="password"?(k==="p"?"current-password":"new-password"):(k==="e"?"username":k==="email"?"email":"off");
+i.name="f"+k+Math.random().toString(36).slice(2,6);i.setAttribute("data-lpignore","true");i.setAttribute("data-1p-ignore","true");
+if(t==="number"){i.min=0;i.step=1}else if(t==="file")i.accept="image/jpeg,image/png,image/webp";else if(t!=="select")i.maxLength=200;
+if(v!=null&&t!=="file"&&t!=="password")i.value=v;lb.append(i);c.append(lb);ins[k]=i});
 const b=h("button","btn p",btn);b.addEventListener("click",async()=>{const o={};for(const k in ins){const i=ins[k];o[k]=i.type==="file"?i.files[0]:i.type==="password"?i.value:i.value.trim()}b.disabled=true;try{await fn(o,m)}catch(e){m.textContent=e.message}b.disabled=false});
 c.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.type!=="file")b.click()});c.append(b,m);return c}
 const rz=(f,mx=800)=>new Promise((ok,no)=>{if(!f||!/^image\/(jpeg|png|webp)$/.test(f.type)||f.size>8e6)return no(new Error("Choose a JPG, PNG or WebP photo under 8 MB"));const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const k=Math.min(1,mx/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext("2d").drawImage(i,0,0,c.width,c.height);c.toBlob(b=>b?ok(b):no(new Error("Could not process the photo")),"image/jpeg",.75)};i.onerror=()=>no(new Error("Could not read that image"));i.src=r.result};r.onerror=()=>no(new Error("Could not read that file"));r.readAsDataURL(f)});
@@ -288,12 +303,12 @@ function login(){const g=h("div","gate");g.append(h("h3","","Admin login"),form(
 const st=(l,v)=>{const c=h("div","card stat");c.append(h("span","chip",l),h("b","",v));return c};
 function room(){const hold=me.role==="holding",b=hold?null:S.biz.find(x=>x.id===me.biz);if(!hold&&!b){me=null;return login()}
 const w=h("div"),bar=h("div","row bar"),lo=h("button","btn g","Log out");lo.addEventListener("click",async()=>{await sb.auth.signOut();me=null;tip="";HX=[];MS=[];bellOpen=false;thread="";paint()});bar.append(h("h3","",hold?"Holding admin \u00b7 CYBERJAY":b.name+" \u00b7 Admin"),bell(),lo);
-const pn=S.biz.filter(x=>!x.approved).length,T=me.must?[["pw","Set your password"]]:(hold?[["apps","Applications"+(pn?" ("+pn+")":"")],["biz","Businesses"],["reg","Register business"]]:[["stock","Stock & cash flow"],["add","Add item"],["prof","Profile"]]).concat([["pw","Password"]]);
+const pn=S.biz.filter(x=>!x.approved).length,qn=PR.filter(x=>x.status==="requested").length,vn=VR.filter(x=>x.status==="pending").length,T=me.must?[["pw","Set your password"]]:(hold?[["apps","Applications"+(pn?" ("+pn+")":"")],["biz","Businesses"],["plans","Plans"+(qn?" ("+qn+")":"")],["ver","Verification"+(vn?" ("+vn+")":"")],["reg","Register business"]]:[["stock","Stock & cash flow"],["add","Add item"],["prof","Profile"],["plan","Plan"],["verify","Verify"]]).concat([["pw","Password"]]);
 if(!T.some(x=>x[0]===tab))tab=T[0][0];
 const tb=h("div","sub");T.forEach(([k,l])=>{const x=h("button","btn "+(k===tab?"p":"g"),l);x.addEventListener("click",()=>{tab=k;tip="";paint()});tb.append(x)});
 w.append(bar,tb);if(bellOpen)w.append(panel());if(me.must)w.append(h("p","err","Welcome! Please set your own password to continue."));if(flash){const f=h("p","err",flash);f.setAttribute("role","status");w.append(f);flash=""}
 if(tip){const c=h("div","card"),ta=h("textarea");ta.readOnly=true;ta.value=tip;c.append(h("p","mut","Create the owner in Supabase (Authentication > Users > Add user, auto-confirm), then run this in the SQL Editor:"),ta);w.append(c)}
-w.append(({stock:()=>stockV(b),add:()=>addV(b),prof:()=>profV(b),biz:bizV,reg:regV,pw:pwV,apps:appsV})[tab]());return w}
+w.append(({stock:()=>stockV(b),add:()=>addV(b),prof:()=>profV(b),biz:bizV,reg:regV,pw:pwV,apps:appsV,plan:()=>planV(b),verify:()=>verifyV(b),plans:plansV,ver:verV})[tab]());return w}
 function row(b,x){const r=h("div","svc rw"),im=h("img","th");im.src=safeImg(x.img)||ph(x.n);im.alt="";const m=h("div","gr");m.append(h("b","",x.n),h("small","",x.q+" in stock \u00b7 "+x.sq+" sold \u00b7 "+(x.sold?"sold out "+age(x.s)+" days ago":"listed "+age(x.t)+" days ago")));
 if(!x.sold&&age(x.t)>30)m.append(h("span","chip slow","Slow mover"));
 const num=(v,l,t,mx,fn)=>{const i=h("input"),lb=h("label","mini",t);i.type="number";i.min=0;i.step=1;i.value=v;i.setAttribute("aria-label",l);i.addEventListener("change",async()=>{try{const n=Math.round(Number(i.value));if(!(n>=0&&n<=mx))throw new Error("Invalid number");await fn(n)}catch(e){flash=e.message}await refresh();paint()});lb.append(i);return lb};
@@ -305,7 +320,7 @@ function stockV(b){const s=stats(b),w=h("div"),g=h("div","cols sm");
 g.append(st("Units in stock",s.units),st("Units sold",s.usold),st("Stock value",kes(s.val)),st("Cash in (sold)",kes(s.rev)),st("Avg days to sell",s.avg+" d"),st("Slow movers (30d+)",s.slow));
 const pv=h("a","btn g","Preview storefront");pv.href="#/b/"+b.id;w.append(g,h("h3","sec","In stock (longest-waiting first)"));
 s.i.sort((a,c)=>a.t-c.t).forEach(x=>w.append(row(b,x)));w.append(h("h3","sec","Sold out (restock by raising Qty)"));s.s.sort((a,c)=>c.s-a.s).forEach(x=>w.append(row(b,x)));w.append(h("p"),pv);return w}
-function addV(b){return form([["n","Item name"],["p","Price (KES)","number"],["q","How many do you have?","number","1"],["f","Photo","file"]],"Add to stock",async o=>{nm(o.n,"Name",2,80);const p=price(o.p);let img="";
+function addForm(b){return form([["n","Item name"],["p","Price (KES)","number"],["q","How many do you have?","number","1"],["f","Photo","file"]],"Add to stock",async o=>{nm(o.n,"Name",2,80);const p=price(o.p);let img="";
 if(o.f){const blob=await rz(o.f);img=b.uid+"/"+crypto.randomUUID()+".jpg";await db(sb.storage.from("item-photos").upload(img,blob,{contentType:"image/jpeg"}))}
 const q=Math.round(Number(o.q));if(!(q>=1&&q<=1e5))throw new Error("Quantity must be 1 or more");await db(sb.from("items").insert({business_id:b.uid,name:o.n,price:p,qty:q,img}));await refresh();flash="Item added.";tab="stock";paint()})}
 function profV(b){return form([["sells","What you sell","text",b.sells],["svc","Services (comma separated)","text",b.services.join(", ")],["ceo","CEO / owner","text",b.ceo],["loc","Location","text",b.loc],["hrs","Opening hours","text",b.hrs],["since","Since (year)","text",b.since],["wa","WhatsApp (2547XXXXXXXX)","text",b.wa],["ig","Instagram handle","text",b.ig],["bn","Banner picture for the home slider (optional, wide photo)","file"]],"Save profile",async o=>{
@@ -315,11 +330,11 @@ if(o.bn){const blob=await rz(o.bn,1400),path=b.uid+"/banner-"+crypto.randomUUID(
 await db(sb.from("businesses").update(up).eq("id",b.uid));await refresh();flash="Profile saved.";tab="stock";paint()})}
 function pwV(){return form([["a","New password (10+ characters)","password"],["c","Repeat new password","password"]],"Change password",async o=>{if(o.a.length<10||o.a.length>72)throw new Error("Password must be 10-72 characters");if(o.a!==o.c)throw new Error("The two passwords do not match");
 await db(sb.auth.updateUser({password:o.a,data:{must_change:false}}));me.must=false;flash="Password changed.";tab=me.role==="holding"?"biz":"stock";paint()})}
-let HX=[],MS=[],bellOpen=false,thread="";
+let HX=[],MS=[],PR=[],VR=[],bellOpen=false,thread="";
 const dl=d=>Math.ceil((Date.parse(d+"T23:59:59")-Date.now())/D),mineRole=()=>me.role==="holding"?"holding":"biz";
-async function loadX(){if(!me)return;const [a,b]=await Promise.all([sb.from("hosting").select("*"),sb.from("messages").select("*").order("created_at")]);if(!a.error)HX=a.data;if(!b.error)MS=b.data}
+async function loadX(){if(!me)return;const [a,b,c,d]=await Promise.all([sb.from("hosting").select("*"),sb.from("messages").select("*").order("created_at"),sb.from("plan_requests").select("*").order("requested_at",{ascending:false}),sb.from("verifications").select("*")]);if(!a.error)HX=a.data;if(!b.error)MS=b.data;if(!c.error)PR=c.data;if(!d.error)VR=d.data}
 setInterval(async()=>{if(me&&location.hash==="#/chamber"){const n=MS.length;await loadX();if(MS.length!==n)paint()}},3e4);
-function notes(){const out=[],hold=me.role==="holding";if(hold){const n=S.biz.filter(x=>!x.approved).length;if(n)out.push({t:n+" business application"+(n===1?"":"s")+" waiting for your approval (see the Applications tab).",k:"warn"})}else{const o=S.biz.find(x=>x.id===me.biz);if(o&&!o.approved)out.push({t:"Your application is waiting for approval by the holding admin. Your business is not visible to customers yet.",k:"info"})}HX.forEach(x=>{const b=S.biz.find(z=>z.uid===x.business_id);if(!b)return;const d=dl(x.paid_until);
+function notes(){const out=[],hold=me.role==="holding";if(hold){const a=PR.filter(x=>x.status==="requested").length,v=VR.filter(x=>x.status==="pending").length;if(a)out.push({t:a+" plan request"+(a===1?"":"s")+" waiting (Plans tab).",k:"warn"});if(v)out.push({t:v+" ID verification"+(v===1?"":"s")+" to review (Verification tab).",k:"warn"})}if(hold){const n=S.biz.filter(x=>!x.approved).length;if(n)out.push({t:n+" business application"+(n===1?"":"s")+" waiting for your approval (see the Applications tab).",k:"warn"})}else{const o=S.biz.find(x=>x.id===me.biz);if(o&&!o.approved)out.push({t:"Your application is waiting for approval by the holding admin. Your business is not visible to customers yet.",k:"info"})}HX.forEach(x=>{const b=S.biz.find(z=>z.uid===x.business_id);if(!b)return;const d=dl(x.paid_until);
 if(!hold){if(d<0)out.push({t:"Hosting is overdue by "+(-d)+" day(s). Please contact the holding admin to avoid your business being hidden.",k:"warn"});else if(d<=12)out.push({t:"Hosting expires in "+d+" day"+(d===1?"":"s")+" (on "+x.paid_until+"). Please arrange payment with the holding admin.",k:d<=1?"warn":"info"})}
 else if(d<0)out.push({t:b.name+" hosting is "+(-d)+" day(s) overdue.",k:"warn",hide:b});else if(d<=12)out.push({t:b.name+" hosting expires in "+d+" day(s).",k:"info"})});return out}
 const unread=()=>MS.filter(m=>m.from_role!==mineRole()&&!m.read_at).length;
@@ -339,7 +354,7 @@ function bizV(){const w=h("div");S.biz.forEach(b=>{const s=stats(b),c=h("div","c
 x.addEventListener("click",async()=>{const t=prompt("This permanently deletes "+b.name+", all its items, photos and its owner login.\nType the business name exactly to confirm:");if(t!==b.name)return;x.disabled=true;
 const q=await sb.functions.invoke("create-business",{body:{action:"delete",slug:b.id}});if(q.error){let m="Could not remove the business.";try{const e=await q.error.context.json();if(e&&e.error)m=e.error}catch(z){}flash=m}else{await refresh();flash=b.name+" removed."}paint()});
 hb.addEventListener("click",async()=>{const nh=!b.hidden;try{await setHidden(b,nh);flash=b.name+(nh?" is now hidden from customers.":" is now visible to customers.")}catch(e){flash=e.message}paint()});
-r.append(a,hb,x);c.append(h("h4","",b.name+(b.approved?"":" (pending approval)")+(b.hidden?" (hidden from public)":"")),h("p","mut","CEO: "+b.ceo+" \u00b7 "+b.tag),h("p","mut",s.units+" units in stock \u00b7 "+s.usold+" sold \u00b7 cash in "+kes(s.rev)+" \u00b7 stock value "+kes(s.val)),h("p","mut",hx?"Hosting paid until "+hx.paid_until+(dd<0?" (overdue by "+(-dd)+" days)":" ("+dd+" days left)"):"Hosting date not set"),r);
+r.append(a,hb,x);c.append(h("h4","",b.name+(b.approved?"":" (pending approval)")+(b.hidden?" (hidden from public)":"")+" \u00b7 "+PL[b.plan].n+(b.verified?" \u00b7 verified":"")),h("p","mut","CEO: "+b.ceo+" \u00b7 "+b.tag),h("p","mut",s.units+" units in stock \u00b7 "+s.usold+" sold \u00b7 cash in "+kes(s.rev)+" \u00b7 stock value "+kes(s.val)),h("p","mut",hx?"Hosting paid until "+hx.paid_until+(dd<0?" (overdue by "+(-dd)+" days)":" ("+dd+" days left)"):"Hosting date not set"),r);
 c.append(form([["d","Hosting paid until","date",hx?hx.paid_until:""]],"Save hosting date",async o=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(o.d)||isNaN(Date.parse(o.d)))throw new Error("Pick a valid date");await db(sb.from("hosting").upsert({business_id:b.uid,paid_until:o.d}));await loadX();flash="Hosting date saved for "+b.name+".";paint()}));w.append(c)});return w}
 function join(){const f=document.createDocumentFragment(),s=h("section","hero"),w=h("div","wrap");w.append(h("p","eyebrow",T("joinEyebrow","Join CYBERJAY Holdings")),h("h1","",T("joinTitle","Register your business")),h("p","lead",T("joinLead","Fill in your details. The holding admin will verify your business before it appears on the site.")));s.append(w);
 const sh=h("section","sheet"),sw=h("div","wrap"),box=h("div","gate");
@@ -355,6 +370,41 @@ c.append(h("h4","",b.name),h("p","mut",b.tag+" \u00b7 "+b.loc+" \u00b7 since "+b
 ok.addEventListener("click",async()=>{try{await db(sb.from("businesses").update({approved:true}).eq("id",b.uid));await refresh();flash=b.name+" approved. It is now visible to customers."}catch(e){flash=e.message}paint()});
 no.addEventListener("click",async()=>{if(!confirm("Decline and delete "+b.name+"? This also removes the applicant's login."))return;const q=await sb.functions.invoke("create-business",{body:{action:"delete",slug:b.id}});if(q.error){let m="Could not decline.";try{const e=await q.error.context.json();if(e&&e.error)m=e.error}catch(z){}flash=m}else{await refresh();flash=b.name+" declined and removed."}paint()});
 r.append(ok,no);c.append(r);w.append(c)});return w}
+function addV(b){const lim=PL[b.plan].lim,used=b.items.filter(x=>!x.sold).length,w=h("div");w.append(h("p","mut",PL[b.plan].n+" plan: "+used+" of "+(lim===Infinity?"unlimited":lim)+" products in use."));
+if(used>=lim)w.append(h("p","err","You have reached your plan limit. Upgrade in the Plan tab to add more products."));else w.append(addForm(b));return w}
+function planV(b){const w=h("div"),cur=b.plan,pend=PR.find(x=>x.business_id===b.uid&&x.status==="requested"),f=h("div","cols");
+const FE={free:["Up to 3 products","Direct WhatsApp access"],standard:["Up to 15 products","Use your admin panel","WhatsApp and Instagram access","Eligible for the Verified Seller badge (ID check)"],premium:["Homepage banner spot","Unlimited products","Priority search rank","Eligible for the Verified Seller badge (ID check)"]},DP={free:"Free",standard:"KES 500 / month",premium:"KES 1,500 / month"};
+["free","standard","premium"].forEach(k=>{const c=h("div","card"),ul=h("ul","note");FE[k].forEach(x=>ul.append(h("li","",x)));
+c.append(h("h3","",PL[k].n+(k===cur?" \u2713 (your plan)":"")),h("p","pr",T("price"+k[0].toUpperCase()+k.slice(1),DP[k])),ul);
+if(k!=="free"&&RK[k]>RK[cur]){const sent=pend&&pend.plan===k,bt=h("button","btn "+(sent?"g":"p"),sent?"Request sent":"Request "+PL[k].n);bt.disabled=!!pend;bt.addEventListener("click",async()=>{try{await db(sb.from("plan_requests").insert({business_id:b.uid,plan:k}));await loadX();flash="Request sent. "+T("payNote","Pay the holding admin, who will then activate your plan.")}catch(e){flash=e.message}paint()});c.append(bt)}f.append(c)});
+w.append(h("p","mut","Your plan: "+PL[cur].n+(b.verified?" \u00b7 Verified seller":"")),f,h("p","mut",T("payNote","Pay the holding admin, who will then activate your plan.")));
+const hw=T("holdingWa","");if(pend&&/^\d{10,15}$/.test(hw))w.append(ext("https://wa.me/"+hw+"?text="+encodeURIComponent("Hello CYBERJAY Holdings, I am "+b.name+" and I requested the "+PL[pend.plan].n+" plan."),"Message the holding admin on WhatsApp","wa"," Message the holding admin","btn p"));return w}
+function verifyV(b){const w=h("div"),v=VR.find(x=>x.business_id===b.uid);
+if(b.verified)return h("p","lead","You are a Verified Seller \u2713");
+if(b.plan==="free"){w.append(h("p","mut","The Verified Seller badge is available on the Standard and Premium plans. Upgrade in the Plan tab first."));return w}
+if(v&&v.status==="pending"){w.append(h("p","lead","Your ID is being reviewed by the holding admin. The badge appears once it is approved."));return w}
+if(v&&v.status==="rejected")w.append(h("p","err","Your last submission was not approved. Make sure the photos are clear and the name matches "+b.ceo+", then try again."));
+w.append(h("p","mut","Upload clear photos of the FRONT and BACK of your National ID. The name must match the owner name on your profile ("+b.ceo+"). Only the holding admin can see them, and they are deleted after the review."));
+w.append(form([["f","ID front","file"],["k","ID back","file"],["ok","Do you agree to this?","select","no",[["no","No"],["yes","Yes, I agree"]]]],"Submit for verification",async o=>{
+if(o.ok!=="yes")throw new Error("Choose Yes, I agree to continue");if(!o.f||!o.k)throw new Error("Choose both the front and the back photo");
+const id=crypto.randomUUID(),pf=b.uid+"/front-"+id+".jpg",pk=b.uid+"/back-"+id+".jpg";
+await db(sb.storage.from("id-docs").upload(pf,await rz(o.f,1600),{contentType:"image/jpeg"}));await db(sb.storage.from("id-docs").upload(pk,await rz(o.k,1600),{contentType:"image/jpeg"}));
+await db(sb.from("verifications").upsert({business_id:b.uid,status:"pending",front:pf,back:pk,submitted_at:new Date().toISOString(),decided_at:null,note:""}));await loadX();flash="Submitted. The holding admin will review your ID.";paint()}));return w}
+function plansV(){const w=h("div"),L=PR.filter(x=>x.status==="requested");w.append(h("h3","sec","Plan requests"));if(!L.length)w.append(h("p","mut","No plan requests waiting."));
+L.forEach(q=>{const b=S.biz.find(x=>x.uid===q.business_id);if(!b||!PL[q.plan])return;const c=h("div","card rowc"),r=h("div","row"),ok=h("button","btn p","Agree and activate "+PL[q.plan].n),no=h("button","btn g","Decline");
+c.append(h("h4","",b.name),h("p","mut","Requested "+PL[q.plan].n+" (now "+PL[b.plan].n+"). Confirm you received the payment first."));
+ok.addEventListener("click",async()=>{try{await db(sb.from("businesses").update({plan:q.plan}).eq("id",b.uid));await db(sb.from("plan_requests").update({status:"active",decided_at:new Date().toISOString()}).eq("id",q.id));await refresh();await loadX();flash=b.name+" is now on the "+PL[q.plan].n+" plan."}catch(e){flash=e.message}paint()});
+no.addEventListener("click",async()=>{try{await db(sb.from("plan_requests").update({status:"declined",decided_at:new Date().toISOString()}).eq("id",q.id));await loadX();flash="Request declined."}catch(e){flash=e.message}paint()});
+r.append(ok,no);c.append(r);w.append(c)});
+w.append(h("h3","sec","Set a plan directly"));
+S.biz.forEach(b=>w.append(form([["pl","Plan for "+b.name,"select",b.plan,[["free","Free"],["standard","Standard"],["premium","Premium"]]]],"Save plan",async o=>{if(!["free","standard","premium"].includes(o.pl))throw new Error("Invalid plan");await db(sb.from("businesses").update({plan:o.pl}).eq("id",b.uid));await refresh();flash=b.name+" is now on the "+PL[o.pl].n+" plan.";paint()})));return w}
+function verV(){const w=h("div"),L=VR.filter(x=>x.status==="pending");if(!L.length)w.append(h("p","mut","No ID verifications waiting."));
+L.forEach(v=>{const b=S.biz.find(x=>x.uid===v.business_id);if(!b)return;const c=h("div","card rowc"),r=h("div","row"),box=h("div"),ap=h("button","btn p","Approve (ID matches)"),rj=h("button","btn g","Reject");
+c.append(h("h4","",b.name),h("p","mut","Registered owner name: "+b.ceo+". Approve only if the ID shows the same name and the photos look genuine."));
+const show=(label,path)=>{const x=h("button","btn g",label);x.addEventListener("click",async()=>{const q=await sb.storage.from("id-docs").createSignedUrl(path,120);if(q.error||!q.data||!String(q.data.signedUrl).startsWith(SB_URL+"/storage/v1/")){flash="Could not open the photo.";paint();return}const im=h("img","idimg");im.src=q.data.signedUrl;im.alt=label;box.replaceChildren(im)});return x};
+const done=async ok=>{try{await sb.storage.from("id-docs").remove([v.front,v.back]);await db(sb.from("verifications").update({status:ok?"approved":"rejected",front:"",back:"",decided_at:new Date().toISOString()}).eq("business_id",v.business_id));await db(sb.from("businesses").update({verified:ok}).eq("id",b.uid));await refresh();await loadX();flash=b.name+(ok?" is now a Verified Seller. The ID photos were deleted.":" was not verified. The ID photos were deleted.")}catch(e){flash=e.message}paint()};
+ap.addEventListener("click",()=>done(true));rj.addEventListener("click",()=>done(false));
+r.append(show("View ID front",v.front),show("View ID back",v.back),ap,rj);c.append(r,box);w.append(c)});return w}
 function regV(){return form([["name","Business name"],["tag","Category"],["sells","What it sells"],["ceo","CEO / owner name"],["loc","Location"],["hrs","Opening hours"],["since","Since (year)"],["wa","WhatsApp (2547XXXXXXXX)"],["ig","Instagram handle"],["email","Owner's login email"],["pw","Owner's temporary password (10+ characters)","password"]],"Register business",async o=>{
 nm(o.name,"Business name",2,60);nm(o.tag,"Category",2,60);nm(o.sells,"Description",3,160);nm(o.ceo,"CEO",2,80);contactCk(o);if(!emailOk(o.email))throw new Error("Enter the owner's real email");if(o.pw.length<10)throw new Error("Password needs 10+ characters");
 const r=await sb.functions.invoke("create-business",{body:{name:o.name,tag:o.tag,sells:o.sells,ceo:o.ceo,loc:o.loc,hrs:o.hrs,since:o.since,wa:o.wa,ig:o.ig,email:o.email.toLowerCase(),password:o.pw}});
@@ -375,7 +425,7 @@ if(keep)scrollTo({top:y,behavior:"instant"});else{scrollTo({top:0,behavior:"inst
 document.addEventListener("click",e=>{const t=e.target.closest("[data-scroll]");if(t){const el=document.getElementById(t.dataset.scroll);if(el)el.scrollIntoView({behavior:"smooth"})}});
 $("#yr").textContent=new Date().getFullYear();
 addEventListener("hashchange",()=>route());
-(async()=>{try{const c=JSON.parse(sessionStorage.getItem("cj-c3"));if(Array.isArray(c)&&c.length){S.biz=c;ready=true;route(true)}}catch(e){}
+(async()=>{try{const c=JSON.parse(sessionStorage.getItem("cj-c4"));if(Array.isArray(c)&&c.length){S.biz=c;ready=true;route(true)}}catch(e){}
 await refresh();await restore();route(true)})();
 </script>
 </body>
