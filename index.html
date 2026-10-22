@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-iiaL3f685pV0TQ47D55LCXBI7179+HJtowSMDF2fE8s=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-2C4nU5IdA+QLQ3D0blzZr09KPERNQE1ZlilzUKkyMZg=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-42Yp0MmDPMkT2xcx4R2UkR4D4+MZgMCvws4VzjkD/y8=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-2C4nU5IdA+QLQ3D0blzZr09KPERNQE1ZlilzUKkyMZg=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#0a0a0b">
 <title>CYBERJAY Holdings | Businesses &amp; Marketplace</title>
@@ -186,7 +186,7 @@ input[type=search]{width:100%;margin:0 0 1.2rem;padding:.85rem 1.3rem;border-rad
  "btnJoin": "Register your business",
  "joinEyebrow": "Join CYBERJAY Holdings",
  "joinTitle": "Register your business",
- "joinLead": "Fill in your details. The holding admin will verify your business before it appears on the site. You can log in meanwhile to prepare your stock.",
+ "joinLead": "Fill in your details. The holding admin will verify your business before it appears on the site. Approved businesses get 21 days of Premium free. You can log in meanwhile to prepare your stock.",
  "searchPh": "Search businesses, products or places...",
  "priceFree": "Free",
  "priceStandard": "KES 500 / month",
@@ -245,7 +245,8 @@ input[type=search]{width:100%;margin:0 0 1.2rem;padding:.85rem 1.3rem;border-rad
  ],
  "book": " Book Appointment",
  "apptTitle": "Services & appointments",
- "apptSub": "Browse our past work, then book a time on WhatsApp."
+ "apptSub": "Browse our past work, then book a time on WhatsApp.",
+ "planDays": "30"
 }
 </script>
 <header class="hdr"><a class="logo" href="#/">CYBER<span>JAY</span></a><nav class="menu" id="menu"><a href="#/" data-r="home">Businesses</a><a href="#/about" data-r="about">About</a><a href="#/chamber" data-r="chamber">Admin login</a></nav><button class="ib" id="st" aria-label="Appearance settings" aria-expanded="false">Aa</button></header>
@@ -265,11 +266,12 @@ let last=0,sig="";
 const TX=(()=>{try{return JSON.parse(document.getElementById("txt").textContent)}catch(e){return{}}})(),T=(k,d)=>typeof TX[k]==="string"&&TX[k].trim()?TX[k]:d,pub=()=>S.biz.filter(x=>!x.hidden&&x.approved);
 const PL={free:{n:"Free",lim:3},standard:{n:"Standard",lim:15},premium:{n:"Premium",lim:Infinity}},RK={free:1,standard:2,premium:3},vb=()=>{const e=h("span","chip vf");e.append(ic("sh"),"VERIFIED SELLER");return e},trust=b=>{const c=h("div","card trust"+(b.verified?" ok":"")),t=h("div");c.append(ic(b.verified?"sh":"lk"));t.append(h("h3","",b.verified?T("vTitle","Verified Seller"):"Not ID-verified"),h("p","mut",(b.verified?T("vText","This seller's National ID was checked by CYBERJAY Holdings."):T("uvText","This seller has not been ID-verified. Take extra care and never pay in advance."))+" "+T("tipText","Safety tips: meet in a safe public place, inspect the item before paying, and never pay in advance to someone you do not know.")));c.append(t);return c},ranked=()=>[...pub()].sort((a,b)=>RK[b.plan]-RK[a.plan]||(b.verified-a.verified)),bannerList=()=>{const p=ranked().filter(x=>x.plan==="premium");return p.length?p:ranked()};
 const pu=p=>p?SB_URL+"/storage/v1/object/public/item-photos/"+p.split("/").map(encodeURIComponent).join("/"):"";
+const today=()=>new Date().toISOString().slice(0,10),effPlan=x=>{const p=PL[x.plan]?x.plan:"free";return p==="free"||(x.plan_until&&x.plan_until<today())?"free":p};
 async function refresh(){if(!sb){fail="Could not load the database library.";return false}
 const [a,b]=await Promise.all([sb.from("businesses").select("*").order("sort").order("created_at"),sb.from("items").select("*")]);
 if(a.error||b.error){fail="Could not load data. Please refresh.";return false}fail="";
-const n=a.data.map(x=>({id:x.slug,hidden:!!x.hidden,approved:x.approved!==false,plan:PL[x.plan]?x.plan:"free",verified:!!x.verified,bp:x.banner||"",banner:x.banner?SB_URL+"/storage/v1/object/public/item-photos/"+x.banner.split("/").map(encodeURIComponent).join("/"):"",uid:x.id,name:x.name,tag:x.tag,sells:x.sells,ceo:x.ceo,loc:x.loc,hrs:x.hrs,since:x.since,wa:x.wa,ig:x.ig,services:x.services||[],
-items:b.data.filter(i=>i.business_id===x.id).map(i=>({id:i.id,n:i.name,p:i.price,img:i.img?SB_URL+"/storage/v1/object/public/item-photos/"+i.img.split("/").map(encodeURIComponent).join("/"):"",sold:i.sold,kind:i.kind==="service"?"service":"product",dur:i.duration||"",det:i.details||"",gp:i.gallery||[],gal:(i.gallery||[]).map(g=>pu(g)),q:i.qty,sq:i.sold_qty,rv:Number(i.revenue),t:Date.parse(i.listed_at),s:i.sold_at?Date.parse(i.sold_at):0}))}));last=Date.now();const g=JSON.stringify(n),ch=g!==sig;sig=g;S.biz=n;ready=true;try{sessionStorage.setItem("cj-c5",g)}catch(e){}return ch}
+const n=a.data.map(x=>({id:x.slug,hidden:!!x.hidden,approved:x.approved!==false,plan:effPlan(x),planRaw:PL[x.plan]?x.plan:"free",until:x.plan_until||"",trial:!!x.trial,verified:!!x.verified&&effPlan(x)!=="free",bp:x.banner||"",banner:x.banner?SB_URL+"/storage/v1/object/public/item-photos/"+x.banner.split("/").map(encodeURIComponent).join("/"):"",uid:x.id,name:x.name,tag:x.tag,sells:x.sells,ceo:x.ceo,loc:x.loc,hrs:x.hrs,since:x.since,wa:x.wa,ig:x.ig,services:x.services||[],
+items:b.data.filter(i=>i.business_id===x.id).map(i=>({id:i.id,n:i.name,p:i.price,img:i.img?SB_URL+"/storage/v1/object/public/item-photos/"+i.img.split("/").map(encodeURIComponent).join("/"):"",sold:i.sold,kind:i.kind==="service"?"service":"product",dur:i.duration||"",det:i.details||"",gp:i.gallery||[],gal:(i.gallery||[]).map(g=>pu(g)),q:i.qty,sq:i.sold_qty,rv:Number(i.revenue),t:Date.parse(i.listed_at),s:i.sold_at?Date.parse(i.sold_at):0}))}));last=Date.now();const g=JSON.stringify(n),ch=g!==sig;sig=g;S.biz=n;ready=true;try{sessionStorage.setItem("cj-c6",g)}catch(e){}return ch}
 const $=s=>document.querySelector(s),app=$("#app");
 const h=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
 const P={ig:'<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>',
@@ -366,7 +368,7 @@ async function db(p){const r=await p;if(r.error)throw new Error("Not saved: "+St
 async function whoami(){const r=await sb.from("profiles").select("role,business_id").maybeSingle();if(r.error||!r.data)return null;const b=S.biz.find(x=>x.uid===r.data.business_id),{data:s}=await sb.auth.getSession(),m=!!(s&&s.session&&s.session.user.user_metadata&&s.session.user.user_metadata.must_change);me={role:r.data.role,biz:b?b.id:null,must:m};tab=m?"pw":me.role==="holding"?"biz":"stock";return me}
 async function doLogin(e,p){if(!emailOk(e)||!p)throw new Error("Enter your email and password.");
 const r=await sb.auth.signInWithPassword({email:e,password:p});if(r.error)throw new Error("Wrong email or password.");
-if(!await whoami()){await sb.auth.signOut();throw new Error("This account is not linked to a business yet. Ask the holding admin.")}await loadX();bump();paint()}
+if(!await whoami()){await sb.auth.signOut();throw new Error("This account is not linked to a business yet. Ask the holding admin.")}await loadX();bellOpen=notes().length>0;bump();paint()}
 async function restore(){if(!sb)return;const {data}=await sb.auth.getSession();if(data&&data.session){if(await whoami()){await loadX();bump()}else await sb.auth.signOut()}}
 function chamber(){const f=document.createDocumentFragment(),s=h("section","hero"),w=h("div","wrap");w.append(h("p","eyebrow",T("chEyebrow","Restricted")),h("h1","",T("chTitle","Executive Chamber")),h("p","lead",T("chLead","Business admins manage their own stock here. The holding admin registers businesses.")));s.append(w);
 const sh=h("section","sheet"),sw=h("div","wrap");sw.id="cw";sw.append(me?room():login());sh.append(sw);f.append(s,sh);return f}
@@ -404,9 +406,16 @@ function pwV(){return form([["a","New password (10+ characters)","password"],["c
 await db(sb.auth.updateUser({password:o.a,data:{must_change:false}}));me.must=false;flash="Password changed.";tab=me.role==="holding"?"biz":"stock";paint()})}
 let HX=[],MS=[],PR=[],VR=[],bellOpen=false,thread="",addKind="product";
 const dl=d=>Math.ceil((Date.parse(d+"T23:59:59")-Date.now())/D),mineRole=()=>me.role==="holding"?"holding":"biz";
+const addDays=(d,n)=>new Date(Date.parse(d+"T00:00:00Z")+n*D).toISOString().slice(0,10),PD=Math.max(1,Math.round(Number(T("planDays","30")))||30);
+const planInfo=b=>{const exp=!!(b.until&&b.until<today()),d=b.until&&!exp?Math.max(1,Math.round((Date.parse(b.until+"T00:00:00Z")-Date.parse(today()+"T00:00:00Z"))/D)+1):null;
+if(b.planRaw!=="free"&&!exp&&b.trial)return{d,trial:1,t:"Premium / New member (free trial, "+d+" day"+(d===1?"":"s")+" left)"};
+if(b.planRaw!=="free"&&!exp)return{d,t:PL[b.planRaw].n+(b.until?" until "+b.until+" ("+d+" day"+(d===1?"":"s")+" left)":" (no expiry)")};
+if(b.planRaw!=="free")return{d:null,ended:1,t:"Free ("+(b.trial?"trial":"plan")+" ended "+b.until+")"};return{d:null,t:"Free"}};
 async function loadX(){if(!me)return;const [a,b,c,d]=await Promise.all([sb.from("hosting").select("*"),sb.from("messages").select("*").order("created_at"),sb.from("plan_requests").select("*").order("requested_at",{ascending:false}),sb.from("verifications").select("*")]);if(!a.error)HX=a.data;if(!b.error)MS=b.data;if(!c.error)PR=c.data;if(!d.error)VR=d.data}
 setInterval(async()=>{if(me&&location.hash==="#/chamber"){const n=MS.length;await loadX();if(MS.length!==n)paint()}},3e4);
-function notes(){const out=[],hold=me.role==="holding";if(hold){const a=PR.filter(x=>x.status==="requested").length,v=VR.filter(x=>x.status==="pending").length;if(a)out.push({t:a+" plan request"+(a===1?"":"s")+" waiting (Plans tab).",k:"warn"});if(v)out.push({t:v+" ID verification"+(v===1?"":"s")+" to review (Verification tab).",k:"warn"})}if(hold){const n=S.biz.filter(x=>!x.approved).length;if(n)out.push({t:n+" business application"+(n===1?"":"s")+" waiting for your approval (see the Applications tab).",k:"warn"})}else{const o=S.biz.find(x=>x.id===me.biz);if(o&&!o.approved)out.push({t:"Your application is waiting for approval by the holding admin. Your business is not visible to customers yet.",k:"info"})}HX.forEach(x=>{const b=S.biz.find(z=>z.uid===x.business_id);if(!b)return;const d=dl(x.paid_until);
+function notes(){const out=[],hold=me.role==="holding";if(hold){const a=PR.filter(x=>x.status==="requested").length,v=VR.filter(x=>x.status==="pending").length;if(a)out.push({t:a+" plan request"+(a===1?"":"s")+" waiting (Plans tab).",k:"warn"});if(v)out.push({t:v+" ID verification"+(v===1?"":"s")+" to review (Verification tab).",k:"warn"})}if(hold){const n=S.biz.filter(x=>!x.approved).length;if(n)out.push({t:n+" business application"+(n===1?"":"s")+" waiting for your approval (see the Applications tab).",k:"warn"})}else{const o=S.biz.find(x=>x.id===me.biz);if(o&&!o.approved)out.push({t:"Your application is waiting for approval by the holding admin. Your business is not visible to customers yet.",k:"info"})}if(!hold){const o=S.biz.find(x=>x.id===me.biz);if(o){const pi=planInfo(o);if(pi.ended)out.push({t:"Your "+(o.trial?"free trial":"plan")+" has ended and your business is now on the Free plan. Choose a plan in the Plan tab and pay the holding admin to restore your features.",k:"warn"});else if(pi.d!==null&&pi.d<=5)out.push({t:"Your "+(o.trial?"free Premium trial":PL[o.planRaw].n+" plan")+" ends in "+pi.d+" day"+(pi.d===1?"":"s")+". Choose a plan in the Plan tab and pay the holding admin to keep your features.",k:pi.d<=1?"warn":"info"})}}
+else S.biz.forEach(o=>{const pi=planInfo(o);if(pi.d!==null&&pi.d<=5)out.push({t:o.name+": "+(o.trial?"free trial":PL[o.planRaw].n+" plan")+" ends in "+pi.d+" day"+(pi.d===1?"":"s")+".",k:"info"})});
+HX.forEach(x=>{const b=S.biz.find(z=>z.uid===x.business_id);if(!b)return;const d=dl(x.paid_until);
 if(!hold){if(d<0)out.push({t:"Hosting is overdue by "+(-d)+" day(s). Please contact the holding admin to avoid your business being hidden.",k:"warn"});else if(d<=12)out.push({t:"Hosting expires in "+d+" day"+(d===1?"":"s")+" (on "+x.paid_until+"). Please arrange payment with the holding admin.",k:d<=1?"warn":"info"})}
 else if(d<0)out.push({t:b.name+" hosting is "+(-d)+" day(s) overdue.",k:"warn",hide:b});else if(d<=12)out.push({t:b.name+" hosting expires in "+d+" day(s).",k:"info"})});return out}
 const unread=()=>MS.filter(m=>m.from_role!==mineRole()&&!m.read_at).length;
@@ -426,7 +435,7 @@ function bizV(){const w=h("div");S.biz.forEach(b=>{const s=stats(b),c=h("div","c
 x.addEventListener("click",async()=>{const t=prompt("This permanently deletes "+b.name+", all its items, photos and its owner login.\nType the business name exactly to confirm:");if(t!==b.name)return;x.disabled=true;
 const q=await sb.functions.invoke("create-business",{body:{action:"delete",slug:b.id}});if(q.error){let m="Could not remove the business.";try{const e=await q.error.context.json();if(e&&e.error)m=e.error}catch(z){}flash=m}else{await refresh();flash=b.name+" removed."}paint()});
 hb.addEventListener("click",async()=>{const nh=!b.hidden;try{await setHidden(b,nh);flash=b.name+(nh?" is now hidden from customers.":" is now visible to customers.")}catch(e){flash=e.message}paint()});
-r.append(a,hb,x);c.append(h("h4","",b.name+(b.approved?"":" (pending approval)")+(b.hidden?" (hidden from public)":"")+" \u00b7 "+PL[b.plan].n+(b.verified?" \u00b7 verified":"")),h("p","mut","CEO: "+b.ceo+" \u00b7 "+b.tag),h("p","mut",s.units+" units in stock \u00b7 "+s.usold+" sold \u00b7 cash in "+kes(s.rev)+" \u00b7 stock value "+kes(s.val)),h("p","mut",hx?"Hosting paid until "+hx.paid_until+(dd<0?" (overdue by "+(-dd)+" days)":" ("+dd+" days left)"):"Hosting date not set"),r);
+r.append(a,hb,x);c.append(h("h4","",b.name+(b.approved?"":" (pending approval)")+(b.hidden?" (hidden from public)":"")+" \u00b7 "+planInfo(b).t+(b.verified?" \u00b7 verified":"")),h("p","mut","CEO: "+b.ceo+" \u00b7 "+b.tag),h("p","mut",s.units+" units in stock \u00b7 "+s.usold+" sold \u00b7 cash in "+kes(s.rev)+" \u00b7 stock value "+kes(s.val)),h("p","mut",hx?"Hosting paid until "+hx.paid_until+(dd<0?" (overdue by "+(-dd)+" days)":" ("+dd+" days left)"):"Hosting date not set"),r);
 c.append(form([["d","Hosting paid until","date",hx?hx.paid_until:""]],"Save hosting date",async o=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(o.d)||isNaN(Date.parse(o.d)))throw new Error("Pick a valid date");await db(sb.from("hosting").upsert({business_id:b.uid,paid_until:o.d}));await loadX();flash="Hosting date saved for "+b.name+".";paint()}));w.append(c)});return w}
 function terms(){const f=document.createDocumentFragment(),s=h("section","hero"),w=h("div","wrap");w.append(h("p","eyebrow","Legal"),h("h1","","Terms & Conditions"),h("p","lead","Please read these terms before using CYBERJAY Holdings."));s.append(w);
 const sh=h("section","sheet"),sw=h("div","wrap"),c=h("div","card"),L=Array.isArray(TX.terms)?TX.terms:[];
@@ -443,7 +452,7 @@ sw.append(box);sh.append(sw);f.append(s,sh);return f}
 function appsV(){const w=h("div"),L=S.biz.filter(x=>!x.approved);if(!L.length)w.append(h("p","mut","No applications waiting."));
 L.forEach(b=>{const c=h("div","card rowc"),r=h("div","row"),ok=h("button","btn p","Agree"),no=h("button","btn g","Decline");
 c.append(h("h4","",b.name),h("p","mut",b.tag+" \u00b7 "+b.loc+" \u00b7 since "+b.since),h("p","mut","Owner: "+b.ceo+" \u00b7 WhatsApp "+b.wa+" \u00b7 Instagram @"+b.ig),h("p","",b.sells));
-ok.addEventListener("click",async()=>{try{await db(sb.from("businesses").update({approved:true}).eq("id",b.uid));await refresh();flash=b.name+" approved. It is now visible to customers."}catch(e){flash=e.message}paint()});
+ok.addEventListener("click",async()=>{try{await db(sb.from("businesses").update({approved:true}).eq("id",b.uid));await refresh();flash=b.name+" approved. It is now visible to customers and has a "+21+"-day free Premium trial."}catch(e){flash=e.message}paint()});
 no.addEventListener("click",async()=>{if(!confirm("Decline and delete "+b.name+"? This also removes the applicant's login."))return;const q=await sb.functions.invoke("create-business",{body:{action:"delete",slug:b.id}});if(q.error){let m="Could not decline.";try{const e=await q.error.context.json();if(e&&e.error)m=e.error}catch(z){}flash=m}else{await refresh();flash=b.name+" declined and removed."}paint()});
 r.append(ok,no);c.append(r);w.append(c)});return w}
 function addService(b){return form([["n","Service name (e.g. Network setup)"],["p","Starting price (KES)","number"],["d","Duration (e.g. 1 hour)"],["t","Short description"],["g","Portfolio photos (up to 6)","files"]],"Add service",async o=>{
@@ -453,12 +462,12 @@ await db(sb.from("items").insert({business_id:b.uid,name:o.n,price:p,qty:1,kind:
 await refresh();flash="Service added.";tab="stock";paint()})}
 function addV(b){const lim=PL[b.plan].lim,used=b.items.filter(x=>!x.sold).length,w=h("div");w.append(h("p","mut",PL[b.plan].n+" plan: "+used+" of "+(lim===Infinity?"unlimited":lim)+" listings (products and services) in use."));const tl=h("a","chip","By listing you agree to the Terms & Conditions");tl.href="#/terms";tl.target="_blank";tl.rel="noopener";w.append(tl);
 if(used>=lim)w.append(h("p","err","You have reached your plan limit. Upgrade in the Plan tab to add more products."));else{const sg=h("div","row");[["product","Add a product"],["service","Add a service"]].forEach(([k,l])=>{const x=h("button","btn "+(addKind===k?"p":"g"),l);x.addEventListener("click",()=>{addKind=k;paint()});sg.append(x)});w.append(sg,addKind==="service"?addService(b):addForm(b))}return w}
-function planV(b){const w=h("div"),cur=b.plan,pend=PR.find(x=>x.business_id===b.uid&&x.status==="requested"),f=h("div","cols");
+function planV(b){const w=h("div"),cur=b.plan,pi=planInfo(b),pend=PR.find(x=>x.business_id===b.uid&&x.status==="requested"),f=h("div","cols");
 const FE={free:["Up to 3 products","Direct WhatsApp access"],standard:["Up to 15 products","Use your admin panel","WhatsApp and Instagram access","Eligible for the Verified Seller badge (ID check)"],premium:["Homepage banner spot","Unlimited products","Priority search rank","Eligible for the Verified Seller badge (ID check)"]},DP={free:"Free",standard:"KES 500 / month",premium:"KES 1,500 / month"};
 ["free","standard","premium"].forEach(k=>{const c=h("div","card"),ul=h("ul","note");FE[k].forEach(x=>ul.append(h("li","",x)));
 c.append(h("h3","",PL[k].n+(k===cur?" \u2713 (your plan)":"")),h("p","pr",T("price"+k[0].toUpperCase()+k.slice(1),DP[k])),ul);
-if(k!=="free"&&RK[k]>RK[cur]){const sent=pend&&pend.plan===k,bt=h("button","btn "+(sent?"g":"p"),sent?"Request sent":"Request "+PL[k].n);bt.disabled=!!pend;bt.addEventListener("click",async()=>{try{await db(sb.from("plan_requests").insert({business_id:b.uid,plan:k}));await loadX();flash="Request sent. "+T("payNote","Pay the holding admin, who will then activate your plan.")}catch(e){flash=e.message}paint()});c.append(bt)}f.append(c)});
-w.append(h("p","mut","Your plan: "+PL[cur].n+(b.verified?" \u00b7 Verified seller":"")),f,h("p","mut",T("payNote","Pay the holding admin, who will then activate your plan.")));
+if(k!=="free"&&(RK[k]>RK[cur]||b.trial||(pi.d!==null&&pi.d<=5))){const sent=pend&&pend.plan===k,bt=h("button","btn "+(sent?"g":"p"),sent?"Request sent":"Request "+PL[k].n);bt.disabled=!!pend;bt.addEventListener("click",async()=>{try{await db(sb.from("plan_requests").insert({business_id:b.uid,plan:k}));await loadX();flash="Request sent. "+T("payNote","Pay the holding admin, who will then activate your plan.")}catch(e){flash=e.message}paint()});c.append(bt)}f.append(c)});
+w.append(h("p","lead","Your plan: "+pi.t+(b.verified?" \u00b7 Verified seller":"")),pi.trial?h("p","err","Your free Premium trial ends on "+b.until+". Choose a plan below and pay the holding admin before then to keep your features."):h("p"),f,h("p","mut",T("payNote","Pay the holding admin, who will then activate your plan.")));
 const hw=T("holdingWa","");if(pend&&/^\d{10,15}$/.test(hw))w.append(ext("https://wa.me/"+hw+"?text="+encodeURIComponent("Hello CYBERJAY Holdings, I am "+b.name+" and I requested the "+PL[pend.plan].n+" plan."),"Message the holding admin on WhatsApp","wa"," Message the holding admin","btn p"));return w}
 function verifyV(b){const w=h("div"),v=VR.find(x=>x.business_id===b.uid);
 if(b.verified)return h("p","lead","You are a Verified Seller \u2713");
@@ -474,11 +483,15 @@ await db(sb.from("verifications").upsert({business_id:b.uid,status:"pending",fro
 function plansV(){const w=h("div"),L=PR.filter(x=>x.status==="requested");w.append(h("h3","sec","Plan requests"));if(!L.length)w.append(h("p","mut","No plan requests waiting."));
 L.forEach(q=>{const b=S.biz.find(x=>x.uid===q.business_id);if(!b||!PL[q.plan])return;const c=h("div","card rowc"),r=h("div","row"),ok=h("button","btn p","Agree and activate "+PL[q.plan].n),no=h("button","btn g","Decline");
 c.append(h("h4","",b.name),h("p","mut","Requested "+PL[q.plan].n+" (now "+PL[b.plan].n+"). Confirm you received the payment first."));
-ok.addEventListener("click",async()=>{try{await db(sb.from("businesses").update({plan:q.plan}).eq("id",b.uid));await db(sb.from("plan_requests").update({status:"active",decided_at:new Date().toISOString()}).eq("id",q.id));await refresh();await loadX();flash=b.name+" is now on the "+PL[q.plan].n+" plan."}catch(e){flash=e.message}paint()});
+ok.addEventListener("click",async()=>{try{await db(sb.from("businesses").update({plan:q.plan,plan_until:addDays(b.until&&!(b.until<today())?b.until:addDays(today(),-1),PD),trial:false}).eq("id",b.uid));await db(sb.from("plan_requests").update({status:"active",decided_at:new Date().toISOString()}).eq("id",q.id));await refresh();await loadX();flash=b.name+" is now on the "+PL[q.plan].n+" plan for "+PD+" more days."}catch(e){flash=e.message}paint()});
 no.addEventListener("click",async()=>{try{await db(sb.from("plan_requests").update({status:"declined",decided_at:new Date().toISOString()}).eq("id",q.id));await loadX();flash="Request declined."}catch(e){flash=e.message}paint()});
 r.append(ok,no);c.append(r);w.append(c)});
 w.append(h("h3","sec","Set a plan directly"));
-S.biz.forEach(b=>w.append(form([["pl","Plan for "+b.name,"select",b.plan,[["free","Free"],["standard","Standard"],["premium","Premium"]]]],"Save plan",async o=>{if(!["free","standard","premium"].includes(o.pl))throw new Error("Invalid plan");await db(sb.from("businesses").update({plan:o.pl}).eq("id",b.uid));await refresh();flash=b.name+" is now on the "+PL[o.pl].n+" plan.";paint()})));return w}
+S.biz.forEach(b=>{w.append(h("p","mut",b.name+": "+planInfo(b).t));
+w.append(form([["pl","Plan for "+b.name,"select",b.planRaw,[["free","Free"],["standard","Standard"],["premium","Premium"]]],["dy","Days to add (0 = no expiry)","number","0"]],"Save plan",async o=>{
+if(!["free","standard","premium"].includes(o.pl))throw new Error("Invalid plan");const n=Math.round(Number(o.dy));if(!(n>=0&&n<=3650))throw new Error("Days must be 0 to 3650");
+const until=o.pl==="free"||n===0?null:addDays(b.until&&!(b.until<today())?b.until:addDays(today(),-1),n);
+await db(sb.from("businesses").update({plan:o.pl,plan_until:until,trial:false}).eq("id",b.uid));await refresh();flash=b.name+" is now on the "+PL[o.pl].n+" plan"+(until?" until "+until:"")+".";paint()}))});return w}
 function verV(){const w=h("div"),L=VR.filter(x=>x.status==="pending");if(!L.length)w.append(h("p","mut","No ID verifications waiting."));
 L.forEach(v=>{const b=S.biz.find(x=>x.uid===v.business_id);if(!b)return;const c=h("div","card rowc"),r=h("div","row"),box=h("div"),ap=h("button","btn p","Approve (ID matches)"),rj=h("button","btn g","Reject");
 c.append(h("h4","",b.name),h("p","mut","Registered owner name: "+b.ceo+". Approve only if the ID shows the same name and the photos look genuine."));
@@ -506,7 +519,7 @@ if(keep)scrollTo({top:y,behavior:"instant"});else{scrollTo({top:0,behavior:"inst
 document.addEventListener("click",e=>{const t=e.target.closest("[data-scroll]");if(t){const el=document.getElementById(t.dataset.scroll);if(el)el.scrollIntoView({behavior:"smooth"})}});
 $("#yr").textContent=new Date().getFullYear();
 addEventListener("hashchange",()=>route());
-(async()=>{try{const c=JSON.parse(sessionStorage.getItem("cj-c5"));if(Array.isArray(c)&&c.length){S.biz=c;ready=true;route(true)}}catch(e){}
+(async()=>{try{const c=JSON.parse(sessionStorage.getItem("cj-c6"));if(Array.isArray(c)&&c.length){S.biz=c;ready=true;route(true)}}catch(e){}
 await refresh();await restore();route(true)})();
 </script>
 </body>
