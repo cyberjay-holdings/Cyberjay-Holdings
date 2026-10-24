@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-1s5v9bG03njkn5VDlC9zCyg/l3TcAr9AofCBIyJoaVE=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-RiJMTUvAW+LPazsCb9Iew/To/6kUrWiZcSGvQuq6vbs=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-9pIIT9POuhbx+fGUlsybAqoCEtkQijp4iLImIIVZCio=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-+m4wC4PpQ8hYy8950fdIU9orY1WHIly0ySECw+r8qUc=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#0a0a0b">
 <title>CYBERJAY Holdings | Businesses &amp; Marketplace</title>
@@ -64,7 +64,7 @@ a{color:inherit;text-decoration:none}ul{list-style:none}button,input{font:inheri
 .num{font:500 .8rem var(--mono);color:var(--acT)}.slot h3{font-size:1.25rem;line-height:1.25}.slot p{color:var(--mut);font-size:.9rem}.slot .go{margin-top:auto;color:var(--acT);font-weight:600;display:flex;gap:.4rem;align-items:center}
 .chip{display:inline-block;padding:.25rem .8rem;border-radius:99px;border:1px solid var(--line);font-size:.78rem;color:var(--mut);width:fit-content}
 .soc{display:flex;gap:.6rem}.soc a{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-size:1.1rem;transition:.2s}.soc a:hover{background:var(--ac);color:var(--on);border-color:var(--ac);transform:translateY(-2px)}
-.sub{display:flex;gap:.5rem;flex-wrap:wrap;margin:1.2rem 0 0}
+.sub{display:flex;gap:.5rem;flex-wrap:wrap;margin:1.2rem 0 0}.soc span.off{width:46px;height:46px;border-radius:50%;border:1px dashed var(--line);display:grid;place-items:center;font-size:1.1rem;opacity:.45}.foot .soc{justify-content:center;margin:0 0 1.1rem}.foot .soc a{text-decoration:none;color:var(--tx)}
 .svc{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.3rem;border-radius:99px;border:1px solid var(--line);background:var(--card);margin-bottom:.7rem}
 .svc:hover{border-color:var(--ac)}.svc b{font-weight:600}
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.2rem}
@@ -213,9 +213,13 @@ input[type=search]{width:100%;margin:0 0 1.2rem;padding:.85rem 1.3rem;border-rad
 <body>
 <!-- ============ EDIT YOUR WORDS HERE ============
  Change ONLY the text on the right side of each line (inside the quotes). Keep the quotes, commas and { } braces.
- Menu labels and the footer are plain HTML below, edit them directly. Do NOT edit anything inside the script or style sections lower down. -->
+ Menu labels and the footer are plain HTML below, edit them directly. Do NOT edit anything inside the script or style sections lower down.
+ SOCIAL LINKS: paste your Instagram and TikTok page links into socialIg and socialTt (full https:// link). For socialWa paste either your number with country code (2547XXXXXXXX) or a full https://wa.me/... link. Empty ones show as greyed icons. -->
 <script type="application/json" id="txt">
 {
+ "socialIg": "",
+ "socialTt": "",
+ "socialWa": "",
  "eyebrow": "CYBERJAY Holdings · Nairobi",
  "line1": "One house.",
  "lead": "Browse what is on sale, build your shopping list, and finish the purchase on WhatsApp with the business owner.",
@@ -377,7 +381,7 @@ const $=s=>document.querySelector(s),app=$("#app");
 const h=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
 const P={ig:'<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>',
 wa:'<path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 21l2.2-5.2A8.5 8.5 0 1 1 21 11.5z"/><path d="M9 8.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-.8.8c-.8-.4-1.5-1.1-1.9-1.9l.8-.8-1-2z"/>',
-ar:'<path d="M5 12h14M13 6l6 6-6 6"/>',lk:'<rect x="4" y="11" width="16" height="10" rx="3"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',sh:'<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>'};
+tt:'<path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.4 2.6 2.2 4.4 5 4.6"/>',ar:'<path d="M5 12h14M13 6l6 6-6 6"/>',lk:'<rect x="4" y="11" width="16" height="10" rx="3"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',sh:'<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>'};
 const ic=k=>{const s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("class","ic");s.setAttribute("viewBox","0 0 24 24");s.setAttribute("aria-hidden","true");s.innerHTML=P[k];return s};
 const ext=(href,label,k,txt,cls)=>{const a=h("a",cls||"");a.href=href;a.target="_blank";a.rel="noopener noreferrer";a.setAttribute("aria-label",label);a.append(ic(k));if(txt)a.append(txt);return a};
 const wa=(b,m)=>/^\d{10,15}$/.test(b.wa)?"https://wa.me/"+b.wa+"?text="+encodeURIComponent(m):"#/";
@@ -386,6 +390,7 @@ const kes=n=>"KES "+Number(n).toLocaleString("en-KE"),age=t=>Math.max(0,Math.flo
 const ph=n=>{const t=n.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase().replace(/[^A-Z0-9]/g,"");
 return "data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c1c20"/><stop offset="1" stop-color="#3a1a05"/></linearGradient></defs><rect width="400" height="300" fill="url(#g)"/><path d="M0 220c80-40 140 30 220-10s120-40 180 0V300H0z" fill="#ff6a00" opacity=".18"/><text x="200" y="175" font-size="84" font-weight="700" text-anchor="middle" fill="#fff" opacity=".85" font-family="sans-serif">'+t+'</text></svg>')};
 const safeImg=u=>typeof u==="string"&&(/^(https:\/\/|assets\/)[\w\-./%:?=&~]+$/.test(u)||/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(u))?u:null;
+const soc2=()=>{const d=h("div","soc");[["ig","socialIg","Instagram"],["tt","socialTt","TikTok"],["wa","socialWa","WhatsApp"]].forEach(([k,key,n])=>{let v=T(key,"").trim();if(k==="wa"&&/^\d{10,15}$/.test(v))v="https://wa.me/"+v;const ok=/^https:\/\/[^\s"'<>]+$/.test(v);let e;if(ok){e=h("a");e.href=v;e.target="_blank";e.rel="noopener noreferrer"}else{e=h("span","off");e.title=n+" link coming soon"}e.setAttribute("aria-label",ok?"CYBERJAY on "+n:n+" (link coming soon)");e.append(ic(k));d.append(e)});return d};
 const contact=(b,m)=>{const d=h("div","soc");d.append(ext(wa(b,m),"Chat with "+b.name+" on WhatsApp","wa"));if(b.plan!=="free")d.append(ext(igu(b),b.name+" on Instagram","ig"));return d};
 const stats=b=>{const pr=b.items.filter(x=>x.kind!=="service"),i=pr.filter(x=>!x.sold),s=pr.filter(x=>x.sold);return{svc:b.items.length-pr.length,i,s,units:i.reduce((a,x)=>a+x.q,0),val:i.reduce((a,x)=>a+x.p*x.q,0),rev:pr.reduce((a,x)=>a+x.rv,0),usold:pr.reduce((a,x)=>a+x.sq,0),avg:s.length?Math.round(s.reduce((a,x)=>a+(x.s-x.t)/D,0)/s.length):0,slow:i.filter(x=>age(x.t)>30).length}};
 
@@ -457,7 +462,7 @@ f.append(s,s1);if(np||!sv.length)f.append(s2);if(s3)f.append(s3);return f}
 function about(){const f=document.createDocumentFragment(),s=h("section","hero"),w=h("div","wrap");w.append(h("p","eyebrow",T("aboutEyebrow","About")),h("h1","",T("aboutTitle","CYBERJAY Holdings")),h("p","lead",T("aboutLead","CYBERJAY Holdings is the parent company behind a family of Nairobi businesses. It began with network, systems and security work and now hosts independent storefronts under one trusted name.")));s.append(w);
 const sh=h("section","sheet"),sw=h("div","wrap"),g=h("div","cols");
 [[T("a1t","Trust first"),T("a1d","Direct contact with each owner. No middlemen, no hidden checkout.")],[T("a2t","Honest stock"),T("a2d","Items are stamped SOLD the moment they go, so you never chase a ghost listing.")],[T("a3t","Private by design"),T("a3d","The public pages take no payments and collect nothing about visitors.")]].forEach(([a,b])=>{const c=h("div","card");c.append(h("h3","",a),h("p","mut",b));g.append(c)});
-sw.append(g);sh.append(sw);f.append(s,sh);return f}
+const fh=h("div","sh sec");fh.append(h("h2","","Follow CYBERJAY"),h("p","","Find us on social media and message us on WhatsApp."));sw.append(g,fh,soc2());sh.append(sw);f.append(s,sh);return f}
 
 /* ---------- chamber (Supabase auth; the database rules enforce who can change what) ---------- */
 const bump=()=>{clearTimeout(idle);if(me)idle=setTimeout(async()=>{await sb.auth.signOut();me=null;paint()},6e5)};
@@ -667,7 +672,7 @@ if(!v){v=home();n="home"}if(n==="home")document.title="CYBERJAY Holdings | Busin
 app.replaceChildren(v);if(!keep){app.classList.remove("pg");void app.offsetWidth;app.classList.add("pg");CJL.nav()}document.querySelectorAll("#menu a").forEach(a=>a.classList.toggle("on",a.dataset.r===n));
 if(keep)scrollTo({top:y,behavior:"instant"});else{scrollTo({top:0,behavior:"instant"});$("#pan").hidden=true}hideBoot()}
 document.addEventListener("click",e=>{const t=e.target.closest("[data-scroll]");if(t){const el=document.getElementById(t.dataset.scroll);if(el)el.scrollIntoView({behavior:"smooth"})}});
-$("#yr").textContent=new Date().getFullYear();
+$("#yr").textContent=new Date().getFullYear();$(".foot .wrap").prepend(soc2());
 addEventListener("hashchange",()=>route());
 (async()=>{try{const c=JSON.parse(sessionStorage.getItem("cj-c10"));if(Array.isArray(c)&&c.length){S.biz=c;ready=true;route(true)}}catch(e){}
 await refresh();await restore();route(true)})();
