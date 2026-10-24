@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-1s5v9bG03njkn5VDlC9zCyg/l3TcAr9AofCBIyJoaVE=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-RiJMTUvAW+LPazsCb9Iew/To/6kUrWiZcSGvQuq6vbs=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-emadi5YA39kqgVB1BmGtkhTohKi+0nR1uqFhce5/gaU=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-bWDZniy2Zxy+6nKpHyaNpdwAhaUI5gZAfgKUaqJw1V8=' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#0a0a0b">
 <title>CYBERJAY Holdings | Businesses &amp; Marketplace</title>
@@ -82,8 +82,12 @@ table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;
 .foot{border-top:1px solid var(--line);background:var(--bg2);padding:2.2rem 0;text-align:center;color:var(--mut);font-size:.85rem}.foot b{color:var(--tx);letter-spacing:.08em}
 
 :root[data-font="playfair"]{--font:"Playfair Display",Georgia,serif}
-:root[data-font="oswald"]{--font:"Oswald","Arial Narrow",sans-serif}
-:root[data-font="fredoka"]{--font:"Fredoka","Comic Sans MS",sans-serif}
+@font-face{font-family:"Canobis";src:local("Canobis"),url("fonts/Canobis.woff2") format("woff2"),url("fonts/Canobis.otf") format("opentype"),url("fonts/Canobis.ttf") format("truetype");font-display:swap}
+@font-face{font-family:"DX Sitrus";src:local("DX Sitrus"),url("fonts/DXSitrus.woff2") format("woff2"),url("fonts/DXSitrus.otf") format("opentype"),url("fonts/DXSitrus.ttf") format("truetype");font-display:swap}
+@font-face{font-family:"Dirtyline";src:local("Dirtyline 36Daysoftype 2022"),local("Dirtyline"),url("fonts/Dirtyline.woff2") format("woff2"),url("fonts/Dirtyline.otf") format("opentype"),url("fonts/Dirtyline.ttf") format("truetype");font-display:swap}
+:root[data-font="canobis"]{--font:"Canobis","Sora",system-ui,sans-serif}
+:root[data-font="dxsitrus"]{--font:"DX Sitrus","Sora",system-ui,sans-serif}
+:root[data-font="dirtyline"]{--font:"Dirtyline","Sora",system-ui,sans-serif}
 :root[data-font="mono"]{--font:var(--mono)}
 :root[data-font="access"]{--font:"Atkinson Hyperlegible",Verdana,sans-serif}
 :root[data-size="s"]{font-size:90%}:root[data-size="l"]{font-size:112%}:root[data-size="xl"]{font-size:125%}
@@ -390,9 +394,9 @@ const contact=(b,m)=>{const d=h("div","soc");d.append(ext(wa(b,m),"Chat with "+b
 const stats=b=>{const pr=b.items.filter(x=>x.kind!=="service"),i=pr.filter(x=>!x.sold),s=pr.filter(x=>x.sold);return{svc:b.items.length-pr.length,i,s,units:i.reduce((a,x)=>a+x.q,0),val:i.reduce((a,x)=>a+x.p*x.q,0),rev:pr.reduce((a,x)=>a+x.rv,0),usold:pr.reduce((a,x)=>a+x.sq,0),avg:s.length?Math.round(s.reduce((a,x)=>a+(x.s-x.t)/D,0)/s.length):0,slow:i.filter(x=>age(x.t)>30).length}};
 
 /* ---------- appearance ---------- */
-const OPT={theme:[["dark","Dark"],["light","Light"]],accent:["orange","blue","green","purple","slate"],font:[["sora","Sora (modern)"],["playfair","Playfair (elegant)"],["oswald","Oswald (bold)"],["fredoka","Fredoka (friendly)"],["mono","Mono (tech)"],["access","Easy to read"]],size:[["s","Small"],["m","Normal"],["l","Large"],["xl","Extra large"]]};
+const OPT={theme:[["dark","Dark"],["light","Light"]],accent:["orange","blue","green","purple","slate"],font:[["sora","Sora (modern)"],["playfair","Playfair (elegant)"],["canobis","Canobis (psychedelic)"],["dxsitrus","DX Sitrus (display)"],["dirtyline","Dirtyline (36 Days)"],["mono","Mono (tech)"],["access","Easy to read"]],size:[["s","Small"],["m","Normal"],["l","Large"],["xl","Extra large"]]};
 const DEF={theme:"dark",accent:"orange",font:"sora",size:"m"};let PF={};try{PF=JSON.parse(localStorage.getItem("cj-pref"))||{}}catch(e){}
-const FF={playfair:"Playfair+Display:wght@500;700",oswald:"Oswald:wght@400;500;600",fredoka:"Fredoka:wght@400;500;600",access:"Atkinson+Hyperlegible:wght@400;700"},lfd=new Set(),lf=k=>{if(FF[k]&&!lfd.has(k)){lfd.add(k);const l=document.createElement("link");l.rel="stylesheet";l.href="https://fonts.googleapis.com/css2?family="+FF[k]+"&display=swap";document.head.append(l)}};
+const FF={playfair:"Playfair+Display:wght@500;700",access:"Atkinson+Hyperlegible:wght@400;700"},lfd=new Set(),lf=k=>{if(FF[k]&&!lfd.has(k)){lfd.add(k);const l=document.createElement("link");l.rel="stylesheet";l.href="https://fonts.googleapis.com/css2?family="+FF[k]+"&display=swap";document.head.append(l)}};
 function applyPf(){lf(PF.font);const r=document.documentElement;for(const g in OPT){if(PF[g])r.dataset[g]=PF[g];else delete r.dataset[g]}
 document.querySelectorAll("#pan [data-g]").forEach(b=>b.setAttribute("aria-pressed",String((PF[b.dataset.g]||DEF[b.dataset.g])===b.dataset.v)));try{localStorage.setItem("cj-pref",JSON.stringify(PF))}catch(e){}}
 (function(){const p=$("#pan"),L={theme:"Theme",accent:"Colour",font:"Font",size:"Text size"};for(const g in OPT){p.append(h("h5","",L[g]));const w=h("div","opt");OPT[g].forEach(o=>{const v=Array.isArray(o)?o[0]:o,b=h("button",g==="accent"?"sw":"seg",g==="accent"?null:o[1]);b.dataset.g=g;b.dataset.v=v;if(g==="accent")b.setAttribute("aria-label",v);w.append(b)});p.append(w)}
