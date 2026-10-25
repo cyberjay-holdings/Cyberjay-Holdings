@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-jJN7PdyTC2wvW62hYP1oCqdqkxO5qtBEWemLoxOpOm0=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-K95SNGk2aJCiY+Hkqy3kKat1M4OFac9o+Ly28by1uh4=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-skzeQuDsLSOzbySj43weHMOxs4QcvHdV5l8di6xT2fw=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-QE7PunOPnrncxJx5My5SwlERxZERUibXEx4DztNxVQ4=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#0a0a0b">
 <title>CYBERJAY Holdings | Businesses &amp; Marketplace</title>
@@ -208,6 +208,7 @@ input[type=search]{width:100%;margin:0 0 1.2rem;padding:.85rem 1.3rem;border-rad
 #app.pg{animation:cjpg .5s cubic-bezier(.2,.7,.2,1)}
 .adtrack{will-change:transform}.adcard{-webkit-backdrop-filter:none;backdrop-filter:none}
 @media(prefers-reduced-motion:reduce){.cjo::before,.cjo .rg,.cjo .rg2,.cjo .ob,.cjo .lg,.cjo .lg::after,.cjb>*,.co i,.co img,.btn.busy::before,#topbar.on,#app.pg{animation:none}.cjt i{animation:none;width:100%}.cjl.dt::after,#cjl .ct::after{animation:none;content:"..."}}
+.rstbox{border-color:var(--ac);margin:.8rem 0}.rsterr{margin:.8rem 0}
 </style>
 </head>
 <body>
@@ -219,7 +220,7 @@ input[type=search]{width:100%;margin:0 0 1.2rem;padding:.85rem 1.3rem;border-rad
 <script type="application/json" id="txt">
 {
  "resetMode": "whatsapp",
- "socialIg": "",
+ "socialIg": "https://www.instagram.com/cyberjay_holdings?cplk=OXNvaDFiMTJqZHd0",
  "socialTt": "",
  "socialWa": "254714066258",
  "eyebrow": "CYBERJAY Holdings · Nairobi",
@@ -273,10 +274,10 @@ input[type=search]{width:100%;margin:0 0 1.2rem;padding:.85rem 1.3rem;border-rad
  "joinLead": "Fill in your details. The holding admin will verify your business before it appears on the site. Approved businesses get a 14-day Premium trial free, plus a new member discount on Premium. You can log in meanwhile to prepare your stock.",
  "searchPh": "Search businesses, products or places...",
  "priceFree": "Free",
- "priceStandard": "KES 299 / month",
- "pricePremium": "KES 699 / month",
+ "priceStandard": "KES 500 / month",
+ "pricePremium": "KES 1,500 / month",
  "payNote": "Pay the holding admin as agreed (M-Pesa or WhatsApp). When he confirms your payment he activates your plan.",
- "holdingWa": "2540714066258",
+ "holdingWa": "254714066258",
  "vTitle": "Verified Seller",
  "vText": "This seller's National ID was checked by CYBERJAY Holdings.",
  "uvText": "This seller has not been ID-verified. Take extra care and never pay in advance.",
@@ -331,15 +332,15 @@ input[type=search]{width:100%;margin:0 0 1.2rem;padding:.85rem 1.3rem;border-rad
  "apptTitle": "Services & appointments",
  "apptSub": "Browse our past work, then book a time on WhatsApp.",
  "planDays": "30",
- "adWeek": "KES 200 / week",
- "adMonth": "KES 700 / month",
+ "adWeek": "KES 300 / week",
+ "adMonth": "KES 1,000 / month",
  "launchDate": "2026-11-01",
  "foundingDays": "10",
  "foundingPct": "35",
  "newPct": "20",
  "offerDays": "30",
- "premiumPrice": "699",
- "standardPrice": "299"
+ "premiumPrice": "1500",
+ "standardPrice": "500"
 }
 </script>
 <div id="topbar" aria-hidden="true"></div>
@@ -498,9 +499,9 @@ function room(){const hold=me.role==="holding",b=hold?null:S.biz.find(x=>x.id===
 const w=h("div"),bar=h("div","row bar"),lo=h("button","btn g","Log out");lo.addEventListener("click",async()=>{await sb.auth.signOut();me=null;tip="";rst=null;HX=[];MS=[];bellOpen=false;thread="";paint()});bar.append(h("h3","",hold?"Holding admin \u00b7 CYBERJAY":b.name+" \u00b7 Admin"),bell(),lo);
 const pn=S.biz.filter(x=>!x.approved).length,qn=PR.filter(x=>x.status==="requested").length,vn=VR.filter(x=>x.status==="pending").length,an=AR.filter(x=>x.status==="requested").length,T=me.must?[["pw","Set your password"]]:(hold?[["apps","Applications"+(pn?" ("+pn+")":"")],["members","Members"],["biz","Businesses"],["plans","Plans"+(qn?" ("+qn+")":"")],["ver","Verification"+(vn?" ("+vn+")":"")],["ads","Ads"+(an?" ("+an+")":"")],["reg","Register business"]]:[["stock","Stock & cash flow"],["add","Add item"],["prof","Profile"],["plan","Plan"],["verify","Verify"],["ads","Ads"]]).concat([["pw","Password"]]);
 if(!T.some(x=>x[0]===tab))tab=T[0][0];
-const tb=h("div","sub");T.forEach(([k,l])=>{const x=h("button","btn "+(k===tab?"p":"g"),l);x.addEventListener("click",()=>{tab=k;tip="";rst=null;paint()});tb.append(x)});
+const tb=h("div","sub");T.forEach(([k,l])=>{const x=h("button","btn "+(k===tab?"p":"g"),l);x.addEventListener("click",()=>{tab=k;tip="";rst=null;rerr=null;paint()});tb.append(x)});
 w.append(bar,tb);if(bellOpen)w.append(panel());if(me.must)w.append(h("p","err","Welcome! Please set your own password to continue."));if(flash){const f=h("p","err",flash);f.setAttribute("role","status");w.append(f);flash=""}
-if(rst)w.append(rstCard());if(tip){const c=h("div","card"),ta=h("textarea");ta.readOnly=true;ta.value=tip;c.append(h("p","mut","Create the owner in Supabase (Authentication > Users > Add user, auto-confirm), then run this in the SQL Editor:"),ta);w.append(c)}
+if(tip){const c=h("div","card"),ta=h("textarea");ta.readOnly=true;ta.value=tip;c.append(h("p","mut","Create the owner in Supabase (Authentication > Users > Add user, auto-confirm), then run this in the SQL Editor:"),ta);w.append(c)}
 w.append(({stock:()=>stockV(b),add:()=>addV(b),prof:()=>profV(b),biz:bizV,reg:regV,pw:pwV,apps:appsV,plan:()=>planV(b),verify:()=>verifyV(b),plans:plansV,ver:verV,ads:()=>hold?adsV():adV(b),members:membersV})[tab]());return w}
 function row(b,x){const r=h("div","svc rw"),im=h("img","th");im.src=safeImg(x.img)||ph(x.n);im.alt="";const m=h("div","gr");m.append(h("b","",x.n),h("small","",x.kind==="service"?"Service \u00b7 "+x.dur+" \u00b7 "+x.gal.length+" portfolio photo"+(x.gal.length===1?"":"s"):x.q+" in stock \u00b7 "+x.sq+" sold \u00b7 "+(x.sold?"sold out "+age(x.s)+" days ago":"listed "+age(x.t)+" days ago")));
 if(x.kind!=="service"&&!x.sold&&age(x.t)>30)m.append(h("span","chip slow","Slow mover"));
@@ -566,10 +567,12 @@ async function setHidden(b,nh){await db(sb.from("businesses").update({hidden:nh}
 function bizV(){const w=h("div");S.biz.forEach(b=>{const s=stats(b),c=h("div","card rowc"),r=h("div","row"),a=h("a","btn g","View storefront"),x=h("button","btn g","Remove business"),hb=h("button","btn g",b.hidden?"Show publicly":"Hide from public"),hx=HX.find(z=>z.business_id===b.uid),dd=hx?dl(hx.paid_until):0;a.href="#/b/"+b.id;
 x.addEventListener("click",async()=>{const t=prompt("This permanently deletes "+b.name+", all its items, photos and its owner login.\nType the business name exactly to confirm:");if(t!==b.name)return;x.disabled=true;
 const q=await sb.functions.invoke("create-business",{body:{action:"delete",slug:b.id}});if(q.error){let m="Could not remove the business.";try{const e=await q.error.context.json();if(e&&e.error)m=e.error}catch(z){}flash=m}else{await refresh();flash=b.name+" removed."}paint()});
-const rp=h("button","btn g","Reset password");rp.addEventListener("click",async()=>{if(!confirm("Reset the password for "+b.name+"?\n\nOnly continue after you have confirmed on WhatsApp that it is really the owner. Ask for: owner name, login email, WhatsApp number on file, last item added, current plan.\n\nTheir old password will stop working."))return;rp.disabled=true;const pw=genPw();const q=await sb.functions.invoke("create-business",{body:{action:"reset",slug:b.id,password:pw}});if(q.error){let m="Could not reset the password. Try again.";try{const e=await q.error.context.json();if(e&&e.error)m=e.error}catch(z){}flash=m;rst=null}else{rst={b,pw};flash="Password reset for "+b.name+". Copy the temporary password below."}paint()});
+const rp=h("button","btn g","Reset password");rp.addEventListener("click",async()=>{if(!confirm("Reset the password for "+b.name+"?\n\nOnly continue after you have confirmed on WhatsApp that it is really the owner. Ask for: owner name, login email, WhatsApp number on file, last item added, current plan.\n\nTheir old password will stop working."))return;rp.disabled=true;rp.textContent="Resetting...";const pw=genPw();let q;busy(1,"save");try{q=await sb.functions.invoke("create-business",{body:{action:"reset",slug:b.id,password:pw}})}catch(e){q={error:e}}finally{busy(-1,"save")}
+if(q.error){let m="Could not reset the password. Check your connection and try again.";try{const e=await q.error.context.json();if(e&&e.error)m=e.error==="Invalid owner email"?"The server function is out of date. In Supabase, redeploy create-business with the latest create-business.ts, then try again.":e.error}catch(z){}rst=null;rerr={id:b.id,m}}else{rerr=null;rst={b,pw}}
+paint();const el=document.querySelector(".rstbox,.rsterr");if(el&&el.scrollIntoView)el.scrollIntoView({behavior:"smooth",block:"center"})});
 hb.addEventListener("click",async()=>{const nh=!b.hidden;try{await setHidden(b,nh);flash=b.name+(nh?" is now hidden from customers.":" is now visible to customers.")}catch(e){flash=e.message}paint()});
 r.append(a,hb,rp,x);c.append(h("h4","",b.name+(b.approved?"":" (pending approval)")+(b.hidden?" (hidden from public)":"")+" \u00b7 "+planInfo(b).t+(b.verified?" \u00b7 verified":"")),h("p","mut","CEO: "+b.ceo+" \u00b7 "+b.tag),h("p","mut",s.units+" units in stock \u00b7 "+s.usold+" sold \u00b7 cash in "+kes(s.rev)+" \u00b7 stock value "+kes(s.val)),h("p","mut",hx?"Hosting paid until "+hx.paid_until+(dd<0?" (overdue by "+(-dd)+" days)":" ("+dd+" days left)"):"Hosting date not set"),r);
-c.append(form([["d","Hosting paid until","date",hx?hx.paid_until:""]],"Save hosting date",async o=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(o.d)||isNaN(Date.parse(o.d)))throw new Error("Pick a valid date");await db(sb.from("hosting").upsert({business_id:b.uid,paid_until:o.d}));await loadX();flash="Hosting date saved for "+b.name+".";paint()}));w.append(c)});return w}
+if(rst&&rst.b.id===b.id){const rc=rstCard();rc.classList.add("rstbox");c.append(rc)}if(rerr&&rerr.id===b.id)c.append(h("p","err rsterr",rerr.m));c.append(form([["d","Hosting paid until","date",hx?hx.paid_until:""]],"Save hosting date",async o=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(o.d)||isNaN(Date.parse(o.d)))throw new Error("Pick a valid date");await db(sb.from("hosting").upsert({business_id:b.uid,paid_until:o.d}));await loadX();flash="Hosting date saved for "+b.name+".";paint()}));w.append(c)});return w}
 function terms(){const f=document.createDocumentFragment(),s=h("section","hero"),w=h("div","wrap");w.append(h("p","eyebrow","Legal"),h("h1","","Terms & Conditions"),h("p","lead","Please read these terms before using CYBERJAY Holdings."));s.append(w);
 const sh=h("section","sheet"),sw=h("div","wrap"),c=h("div","card"),L=Array.isArray(TX.terms)?TX.terms:[];
 L.forEach((x,i)=>{if(Array.isArray(x)&&x.length>1)c.append(h("h3","sec",(i+1)+". "+x[0]),h("p","mut",x[1]))});if(!L.length)c.append(h("p","mut","The terms are not available right now."));
@@ -677,7 +680,7 @@ app.replaceChildren(v);if(!keep){app.classList.remove("pg");void app.offsetWidth
 if(keep)scrollTo({top:y,behavior:"instant"});else{scrollTo({top:0,behavior:"instant"});$("#pan").hidden=true}hideBoot()}
 document.addEventListener("click",e=>{const t=e.target.closest("[data-scroll]");if(t){const el=document.getElementById(t.dataset.scroll);if(el)el.scrollIntoView({behavior:"smooth"})}});
 $("#yr").textContent=new Date().getFullYear();$(".foot .wrap").prepend(soc2());
-let rmsg="",rl=0,rst=null;const genPw=()=>{const A="ABCDEFGHJKMNPQRSTUVWXYZ23456789",u=crypto.getRandomValues(new Uint8Array(10));return[...u].map(n=>A[n%A.length]).join("").replace(/^(.{5})/,"$1-")};
+let rmsg="",rl=0,rst=null,rerr=null;const genPw=()=>{const A="ABCDEFGHJKMNPQRSTUVWXYZ23456789",u=crypto.getRandomValues(new Uint8Array(10));return[...u].map(n=>A[n%A.length]).join("").replace(/^(.{5})/,"$1-")};
 function rstCard(){const c=h("div","card"),b=rst.b,ta=h("textarea"),url=location.origin+location.pathname+"#/chamber";ta.readOnly=true;ta.rows=2;ta.value=rst.pw;c.append(h("h4","","Temporary password for "+b.name),h("p","mut","Shown once. Send it to the owner only after you have confirmed on WhatsApp that it is them. It stops working as soon as they choose their own password."),ta);const r=h("div","row"),cp=h("button","btn g","Copy password");cp.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(rst.pw);cp.textContent="Copied \u2713"}catch(e){ta.select();cp.textContent="Press copy on your keyboard"}});r.append(cp);const wa=String(b.wa||"").replace(/\D/g,"");if(/^\d{10,15}$/.test(wa))r.append(ext("https://wa.me/"+wa+"?text="+encodeURIComponent("Hello "+(b.ceo||"")+", your CYBERJAY temporary password is: "+rst.pw+"\nLog in at "+url+" with your usual email, then choose your own new password. Please do not share this password."),"Send to owner on WhatsApp","wa","Send to owner on WhatsApp","btn p"));c.append(r);return c}
 const RH=/^#(access_token=|error=)/.test(location.hash)&&/(type=recovery|error=)/.test(location.hash)?new URLSearchParams(location.hash.slice(1)):null;
 if(RH)history.replaceState(null,"",location.pathname+location.search+"#/chamber");
