@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-skzeQuDsLSOzbySj43weHMOxs4QcvHdV5l8di6xT2fw=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-QE7PunOPnrncxJx5My5SwlERxZERUibXEx4DztNxVQ4=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-E0CTDBw/6wlkczN2KVk7wQ7tEjhHiEp536Otj3rI1xg=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-QE7PunOPnrncxJx5My5SwlERxZERUibXEx4DztNxVQ4=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#0a0a0b">
 <title>CYBERJAY Holdings | Businesses &amp; Marketplace</title>
@@ -271,11 +271,11 @@ input[type=search]{width:100%;margin:0 0 1.2rem;padding:.85rem 1.3rem;border-rad
  "btnJoin": "Register your business",
  "joinEyebrow": "Join CYBERJAY Holdings",
  "joinTitle": "Register your business",
- "joinLead": "Fill in your details. The holding admin will verify your business before it appears on the site. Approved businesses get a 14-day Premium trial free, plus a new member discount on Premium. You can log in meanwhile to prepare your stock.",
+ "joinLead": "Fill in your details and choose a password. Your business goes live on the marketplace straight away and starts with a 14-day Premium trial, with a new member discount on Premium afterwards. No waiting for approval.",
  "searchPh": "Search businesses, products or places...",
  "priceFree": "Free",
- "priceStandard": "KES 500 / month",
- "pricePremium": "KES 1,500 / month",
+ "priceStandard": "KES 299 / month",
+ "pricePremium": "KES 699 / month",
  "payNote": "Pay the holding admin as agreed (M-Pesa or WhatsApp). When he confirms your payment he activates your plan.",
  "holdingWa": "254714066258",
  "vTitle": "Verified Seller",
@@ -332,15 +332,15 @@ input[type=search]{width:100%;margin:0 0 1.2rem;padding:.85rem 1.3rem;border-rad
  "apptTitle": "Services & appointments",
  "apptSub": "Browse our past work, then book a time on WhatsApp.",
  "planDays": "30",
- "adWeek": "KES 300 / week",
- "adMonth": "KES 1,000 / month",
+ "adWeek": "KES 200 / week",
+ "adMonth": "KES 700 / month",
  "launchDate": "2026-11-01",
  "foundingDays": "10",
  "foundingPct": "35",
  "newPct": "20",
  "offerDays": "30",
- "premiumPrice": "1500",
- "standardPrice": "500"
+ "premiumPrice": "699",
+ "standardPrice": "299"
 }
 </script>
 <div id="topbar" aria-hidden="true"></div>
@@ -493,7 +493,12 @@ async function restore(){if(!sb)return;const {data}=await sb.auth.getSession();i
 function chamber(){const f=document.createDocumentFragment(),s=h("section","hero"),w=h("div","wrap");w.append(h("p","eyebrow",T("chEyebrow","Restricted")),h("h1","",T("chTitle","Executive Chamber")),h("p","lead",T("chLead","Business admins manage their own stock here. The holding admin registers businesses.")));s.append(w);
 const sh=h("section","sheet"),sw=h("div","wrap");sw.id="cw";sw.append(me?room():login());sh.append(sw);f.append(s,sh);return f}
 function paint(){const w=$("#cw");if(w)w.replaceChildren(me?room():login())}
-function login(){const g=h("div","gate");g.append(h("h3","","Admin login"));if(rmsg){g.append(h("p","err",rmsg));rmsg=""}g.append(form([["e","Email"],["p","Password","password"]],"Log in",o=>doLogin(o.e,o.p)));const fp=h("button","btn g","Forgot password?");fp.addEventListener("click",()=>{const bk=h("button","btn g","\u2190 Back to login");bk.addEventListener("click",()=>g.replaceWith(login()));if(T("resetMode","whatsapp")==="email"){g.replaceChildren(h("h3","","Reset your password"),h("p","mut","Enter the email on your account. We will send you a link to choose a new password."),form([["email","Email","email"]],"Send reset link",(o,m)=>doReset(o.email,m)),bk)} else{const hw=T("holdingWa","").replace(/\D/g,"");g.replaceChildren(h("h3","","Forgot your password?"),h("p","mut","For your safety, the CYBERJAY admin will first confirm on WhatsApp that it is really you, then give you a temporary password. After you log in with it, choose your own new password."),/^\d{10,15}$/.test(hw)?ext("https://wa.me/"+hw+"?text="+encodeURIComponent("Hello CYBERJAY Holdings, I forgot my admin password and need a reset.\nBusiness name: \nOwner name: \nLogin email: "),"Contact admin on WhatsApp","wa","Contact admin on WhatsApp","btn p"):h("p","err","The admin WhatsApp number is not set yet. Please contact CYBERJAY Holdings directly."),h("p"),bk)}});g.append(fp);return g}
+const waNum=()=>{for(const k of ["holdingWa","socialWa"]){const v=String(T(k,"")).trim(),m=v.match(/wa\.me\/(\d{10,15})/)||v.match(/^\+?(\d{10,15})$/);if(m)return m[1]}return""};
+function login(){const g=h("div","gate");g.append(h("h3","","Admin login"));if(rmsg){g.append(h("p","err",rmsg));rmsg=""}g.append(form([["e","Email"],["p","Password","password"]],"Log in",o=>doLogin(o.e,o.p)));const fp=h("button","btn g","Forgot password?");fp.addEventListener("click",()=>{const bk=h("button","btn g","\u2190 Back to login");bk.addEventListener("click",()=>g.replaceWith(login()));const hw=waNum(),emailFirst=T("resetMode","whatsapp")==="email";
+const wb=hw?ext("https://wa.me/"+hw+"?text="+encodeURIComponent("Hello CYBERJAY Holdings, I forgot my admin password and need a reset.\nBusiness name: \nOwner name: \nLogin email: "),"Contact admin on WhatsApp","wa","Contact admin on WhatsApp","btn p"):null;
+const ef=form([["email","Your account email","email"]],"Email me a reset link",(o,m)=>doReset(o.email,m));
+const wpart=[h("p","mut","For your safety, the CYBERJAY admin will first confirm on WhatsApp that it is really you, then give you a temporary password. After you log in with it, choose your own new password."),wb],epart=[h("h3","sec","Reset link by email"),h("p","mut","Enter the email on your account and we will send you a link to choose a new password."),ef];
+g.replaceChildren(h("h3","","Forgot your password?"),...(wb&&!emailFirst?[...wpart,h("h3","sec","Or get a reset link by email"),ef]:(wb?[...epart,h("h3","sec","Or ask the admin on WhatsApp"),wb]:epart)),h("p"),bk)});g.append(fp);return g}
 const st=(l,v)=>{const c=h("div","card stat");c.append(h("span","chip",l),h("b","",v));return c};
 function room(){const hold=me.role==="holding",b=hold?null:S.biz.find(x=>x.id===me.biz);if(!hold&&!b){me=null;return login()}
 const w=h("div"),bar=h("div","row bar"),lo=h("button","btn g","Log out");lo.addEventListener("click",async()=>{await sb.auth.signOut();me=null;tip="";rst=null;HX=[];MS=[];bellOpen=false;thread="";paint()});bar.append(h("h3","",hold?"Holding admin \u00b7 CYBERJAY":b.name+" \u00b7 Admin"),bell(),lo);
@@ -579,11 +584,11 @@ L.forEach((x,i)=>{if(Array.isArray(x)&&x.length>1)c.append(h("h3","sec",(i+1)+".
 sw.append(c);sh.append(sw);f.append(s,sh);return f}
 function join(){const f=document.createDocumentFragment(),s=h("section","hero"),w=h("div","wrap");w.append(h("p","eyebrow",T("joinEyebrow","Join CYBERJAY Holdings")),h("h1","",T("joinTitle","Register your business")),h("p","lead",T("joinLead","Fill in your details. The holding admin will verify your business before it appears on the site.")));s.append(w);
 const sh=h("section","sheet"),sw=h("div","wrap"),box=h("div","gate");
-const jf=form([["name","Business name"],["tag","Category (e.g. Electronics, Fashion)"],["sells","What do you sell?"],["ceo","Your full name (owner / CEO)"],["co","County","select","",[["","Choose county"],...Object.keys(KE).map(c=>[c,c])]],["sc","Sub-County / Town","select","",[["","Choose sub-county / town"]]],["so","Other sub-county / town (only if it is not in the list)"],["lm","Specific estate or landmark (for example: Kilimani, near Yaya Centre)"],["hrs","Opening hours"],["since","Since (year)"],["wa","WhatsApp number (2547XXXXXXXX)"],["ig","Instagram handle (no @)"],["email","Your email (you will log in with it)"],["pw","Choose a password (10+ characters)","password"],["agree","Do you accept the Terms & Conditions?","select","no",[["no","No"],["yes","Yes, I accept"]]]],"Submit application",async o=>{
-nm(o.name,"Business name",2,60);nm(o.tag,"Category",2,60);nm(o.sells,"Description",3,160);nm(o.ceo,"Name",2,80);contactCk(o);if(!emailOk(o.email))throw new Error("Enter a real email address");if(o.pw.length<10)throw new Error("Password needs 10+ characters");
+const jf=form([["name","Business name"],["tag","Category (e.g. Electronics, Fashion)"],["sells","What do you sell?"],["ceo","Your full name (owner / CEO)"],["co","County","select","",[["","Choose county"],...Object.keys(KE).map(c=>[c,c])]],["sc","Sub-County / Town","select","",[["","Choose sub-county / town"]]],["so","Other sub-county / town (only if it is not in the list)"],["lm","Specific estate or landmark (for example: Kilimani, near Yaya Centre)"],["hrs","Opening hours"],["since","Since (year)"],["wa","WhatsApp number (2547XXXXXXXX)"],["ig","Instagram handle (no @)"],["email","Your email (you will log in with it)"],["pw","Choose a password (10+ characters)","password"],["pw2","Confirm your password","password"],["agree","Do you accept the Terms & Conditions?","select","no",[["no","No"],["yes","Yes, I accept"]]]],"Create my account",async o=>{
+nm(o.name,"Business name",2,60);nm(o.tag,"Category",2,60);nm(o.sells,"Description",3,160);nm(o.ceo,"Name",2,80);contactCk(o);if(!emailOk(o.email))throw new Error("Enter a real email address");if(o.pw.length<10)throw new Error("Password needs 10+ characters");if(o.pw!==o.pw2)throw new Error("The two passwords do not match. Please type the same password in both boxes.");
 if(!o.co||!KE[o.co])throw new Error("Choose your county");const sub=o.so||o.sc;if(!sub)throw new Error("Choose your sub-county / town, or type it");nm(sub,"Sub-county / town",2,80);nm(o.lm,"Estate or landmark",0,80);if(o.agree!=="yes")throw new Error("You must accept the Terms & Conditions to apply");const r=await sb.functions.invoke("join-business",{body:{name:o.name,tag:o.tag,sells:o.sells,ceo:o.ceo,county:o.co,subcounty:sub,landmark:o.lm,loc:[o.lm,sub,o.co].filter(Boolean).join(", ").slice(0,80),hrs:o.hrs,since:o.since,wa:o.wa,ig:o.ig,email:o.email.toLowerCase(),password:o.pw}});
 if(r.error){let m="Could not submit. Please try again.";try{const e=await r.error.context.json();if(e&&e.error)m=e.error}catch(z){}throw new Error(m)}
-const go=h("a","btn p","Go to Business login");go.href="#/chamber";box.replaceChildren(h("h3","","Application received"),h("p","lead","Thank you. Please wait while the holding admin verifies your business. It will appear on the site once approved. Meanwhile you can log in with your email and password to add your stock."),go)});const js2=jf.querySelectorAll("select");js2[0].addEventListener("change",()=>{js2[1].replaceChildren();[["","Choose sub-county / town"],...(KE[js2[0].value]||[]).map(t=>[t,t])].forEach(([v,l])=>{const op=h("option","",l);op.value=v;js2[1].append(op)})});box.append(jf);
+const go=h("a","btn p","Log in to my business");go.href="#/chamber";box.replaceChildren(h("h3","","Your business is live!"),h("p","lead","Thank you. Your business is now on the marketplace with a 14-day Premium trial. Log in with your email and the password you just chose to add your products and photos."),go)});const js2=jf.querySelectorAll("select");js2[0].addEventListener("change",()=>{js2[1].replaceChildren();[["","Choose sub-county / town"],...(KE[js2[0].value]||[]).map(t=>[t,t])].forEach(([v,l])=>{const op=h("option","",l);op.value=v;js2[1].append(op)})});box.append(jf);
 sw.append(box);sh.append(sw);f.append(s,sh);return f}
 function appsV(){const w=h("div"),L=S.biz.filter(x=>!x.approved);if(!L.length)w.append(h("p","mut","No applications waiting."));
 L.forEach(b=>{const c=h("div","card rowc"),r=h("div","row"),ok=h("button","btn p","Agree"),no=h("button","btn g","Decline");
@@ -685,7 +690,7 @@ function rstCard(){const c=h("div","card"),b=rst.b,ta=h("textarea"),url=location
 const RH=/^#(access_token=|error=)/.test(location.hash)&&/(type=recovery|error=)/.test(location.hash)?new URLSearchParams(location.hash.slice(1)):null;
 if(RH)history.replaceState(null,"",location.pathname+location.search+"#/chamber");
 async function doReset(e,m){m.className="err";if(!emailOk(e))throw new Error("Enter the email on your account.");const w=6e4-(Date.now()-rl);if(w>0)throw new Error("Please wait "+Math.ceil(w/1e3)+" seconds before asking again.");rl=Date.now();
-busy(1,"save");try{const r=await sb.auth.resetPasswordForEmail(e,{redirectTo:location.origin+location.pathname});if(r.error)throw new Error(/rate|limit|seconds/i.test(r.error.message)?"Too many requests. Please wait a few minutes and try again.":"Could not send right now. Check your connection and try again.")}finally{busy(-1,"save")}
+busy(1,"save");try{const r=await sb.auth.resetPasswordForEmail(e,{redirectTo:location.origin+location.pathname});if(r.error){const em=String(r.error.message||"");throw new Error(/rate|limit|seconds/i.test(em)?"Too many reset emails were requested. Please wait about an hour, or ask the admin on WhatsApp for a temporary password.":/send|smtp|mail|authoriz|500/i.test(em)?"We could not send the email right now. Please ask the admin on WhatsApp for a temporary password instead.":"Could not send right now. Check your connection and try again.")}}finally{busy(-1,"save")}
 m.className="err ok";m.textContent="If that email has an account, a reset link is on its way. Check your inbox and spam folder. The link works once and expires soon."}
 async function recover(){if(!RH||!sb)return;if(RH.get("error")||!RH.get("access_token")){rmsg="That reset link has expired or was already used. Tap Forgot password to get a new one.";return}
 const r=await sb.auth.setSession({access_token:RH.get("access_token"),refresh_token:RH.get("refresh_token")||""});if(r.error){rmsg="That reset link is not valid any more. Tap Forgot password to get a new one.";return}
