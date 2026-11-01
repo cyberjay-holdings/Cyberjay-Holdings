@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-jTaDwwJPAildTZmI7T93E6jrNRL5BtP9rNTXLuakp14=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-rEwuuLdVezRPUJFnhQZ+NdC3th+GSfJ4hADKh5/XZ5I=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-7MpDCnkiiuX4F4Jif9civN54tpkNPT0mmX+A12nvnEc=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-rEwuuLdVezRPUJFnhQZ+NdC3th+GSfJ4hADKh5/XZ5I=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#0a0a0b">
 <title>CYBERJAY Holdings | Businesses &amp; Marketplace</title>
@@ -276,7 +276,11 @@ details.hw-q{border:1px solid var(--line);border-radius:18px;background:var(--ca
 </style>
 </head>
 <body>
-<!-- ============ . -->
+<!-- ============ EDIT YOUR WORDS HERE ============
+ Change ONLY the text on the right side of each line (inside the quotes). Keep the quotes, commas and { } braces.
+ Menu labels and the footer are plain HTML below, edit them directly. Do NOT edit anything inside the script or style sections lower down.
+ SOCIAL LINKS: paste your Instagram and TikTok page links into socialIg and socialTt (full https:// link). For socialWa paste either your number with country code (2547XXXXXXXX) or a full https://wa.me/... link. Empty ones show as greyed icons.
+ PASSWORD RESET: resetMode "whatsapp" = owners tap Forgot password and contact the admin on WhatsApp (needs holdingWa). Change to "email" once your domain and email sender are ready. -->
 <script type="application/json" id="txt">{
  "resetMode": "email",
  "requireDocs": "yes",
@@ -935,9 +939,13 @@ L.forEach((x,i)=>{if(Array.isArray(x)&&x.length>1)c.append(h("h3","sec",(i+1)+".
 sw.append(c);sh.append(sw);f.append(s,sh);return f}
 const DISP=new Set("mailinator.com guerrillamail.com guerrillamail.net sharklasers.com 10minutemail.com 10minutemail.net tempmail.com temp-mail.org temp-mail.io yopmail.com yopmail.net trashmail.com throwawaymail.com getnada.com nada.email maildrop.cc dispostable.com fakeinbox.com mailnesia.com mintemail.com mohmal.com emailondeck.com tempail.com tempr.email discard.email moakt.com burnermail.io tmpmail.org inboxkitten.com mail.tm 1secmail.com 1secmail.net 1secmail.org".split(" "));
 const dispOk=e=>!DISP.has(String(e).split("@")[1]);
-const otpErr=e=>{const m=String(e&&e.message||"");return/rate|limit|seconds|too many/i.test(m)?"Please wait a minute before asking for another code.":/send|smtp|mail|authoriz|500|confirmation/i.test(m)?"We could not send the email right now. Please try again in a few minutes, or contact us on WhatsApp.":/invalid|valid/i.test(m)?"That email address does not look valid.":"Could not send the code. Check your connection and try again."};
+const otpErr=e=>{const m=String(e&&e.message||""),c=e&&e.status?" "+e.status:"";return/rate|limit|seconds|too many/i.test(m)?"Please wait a minute before asking for another code.":/timeout|timed out|504|gateway/i.test(m+c)?"The email is taking longer than usual. Check your inbox and spam folder in a minute, then tap Send a new code if nothing came.":/send|smtp|mail|authoriz|500|confirmation/i.test(m)?"We could not send the email right now. Please try again in a few minutes, or contact us on WhatsApp.":/invalid|valid/i.test(m)?"That email address does not look valid.":"Could not send the code ("+(m.replace(/[^\w .,:'-]/g,"").slice(0,80)||"no details")+c+"). Please try again in a minute."};
 async function sendOtp(email,create){const w=6e4-(Date.now()-rl);if(w>0)throw new Error("Please wait "+Math.ceil(w/1e3)+" seconds before asking for another code.");busy(1,"save");try{const r=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:create}});if(r.error&&!(!create&&/signups? not allowed|user not found/i.test(String(r.error.message))))throw new Error(otpErr(r.error));rl=Date.now()}finally{busy(-1,"save")}}
 async function checkOtp(email,code){code=String(code||"").replace(/\D/g,"");if(code.length<6||code.length>10)throw new Error("Type the 6-digit code from the email.");busy(1,"save");try{let r=await sb.auth.verifyOtp({email,token:code,type:"email"});if(r.error)r=await sb.auth.verifyOtp({email,token:code,type:"signup"});if(r.error||!r.data||!r.data.session)throw new Error("That code is wrong or has expired. Use the newest email, or ask for a new code.")}finally{busy(-1,"save")}}
+async function sendDocs(pics){const g=async body=>{const r=await sb.functions.invoke("join-business",{body});if(r.error){let m="Could not send the documents.";try{const e=await r.error.context.json();if(e&&e.error)m=e.error}catch(z){}throw new Error(m)}return r.data},st=await g({action:"docs-start"});
+if(!st||!Array.isArray(st.uploads)||st.uploads.length!==3)throw new Error("Could not prepare the upload.");
+for(let i=0;i<3;i++){const u=st.uploads[i],r=await sb.storage.from("id-docs").uploadToSignedUrl(u.path,u.token,pics[i],{contentType:"image/jpeg"});if(r.error)throw new Error("Photo "+(i+1)+" could not be uploaded: "+String(r.error.message||"").slice(0,80))}
+await g({action:"docs-done",front:st.uploads[0].path,back:st.uploads[1].path,permit:st.uploads[2].path})}
 const codeBox=(label,btn,fn)=>{const g=form([["c",label]],btn,fn),i=g.querySelector("input");i.inputMode="numeric";i.autocomplete="one-time-code";i.maxLength=10;return g};
 function join(){const f=document.createDocumentFragment(),s=h("section","hero"),w=h("div","wrap");w.append(h("p","eyebrow",T("joinEyebrow","Join CYBERJAY Holdings")),h("h1","",T("joinTitle","Register your business")),h("p","lead",T("joinLead","Fill in your details. The holding admin will verify your business before it appears on the site.")));s.append(w);
 const sh=h("section","sheet"),sw=h("div","wrap"),box=h("div","gate"),need=T("requireDocs","yes")!=="no";
@@ -952,8 +960,7 @@ const dc=!!(o.f&&o.k&&o.pm);if(need&&!dc)throw new Error("Please add all three p
 const r=await sb.functions.invoke("join-business",{body:{name:o.name,tag:o.tag,sells:o.sells,ceo:o.ceo,county:o.co,subcounty:sub,landmark:o.lm,loc:[o.lm,sub,o.co].filter(Boolean).join(", ").slice(0,80),hrs:o.hrs,since:o.since,wa:o.wa,ig:o.ig,email,password:o.pw,consent:"2026-10-31"}});
 if(r.error){let m="Could not submit. Please try again.";try{const e=await r.error.context.json();if(e&&e.error)m=e.error}catch(z){}throw new Error(m)}
 const bid=r.data&&r.data.id;let dm=dc?"":"You can send your ID and permit later from the Verify tab in your panel.";
-if(dc&&bid){try{const id=crypto.randomUUID(),pf=bid+"/front-"+id+".jpg",pk=bid+"/back-"+id+".jpg",pp=bid+"/permit-"+id+".jpg";await db(sb.storage.from("id-docs").upload(pf,pics[0],{contentType:"image/jpeg"}));await db(sb.storage.from("id-docs").upload(pk,pics[1],{contentType:"image/jpeg"}));await db(sb.storage.from("id-docs").upload(pp,pics[2],{contentType:"image/jpeg"}));
-await db(sb.from("verifications").upsert({business_id:bid,status:"pending",front:pf,back:pk,permit:pp,submitted_at:new Date().toISOString(),decided_at:null,note:""}))}catch(e){dm="Your business was created, but your ID and permit photos could not be uploaded. Log in and send them from the Verify tab."}}else if(dc)dm="Your business was created, but your ID and permit photos could not be uploaded. Log in and send them from the Verify tab.";
+if(dc&&bid){try{await sendDocs(pics)}catch(e){dm="Your business was created, but we could not send your ID and permit ("+e.message+"). Log in and send them from the Verify tab."}}else if(dc)dm="Your business was created, but we could not send your ID and permit. Log in and send them from the Verify tab.";
 try{await sb.auth.signOut()}catch(z){}
 const go=h("a","btn p","Log in to my business");go.href="#/chamber";box.replaceChildren(h("h3","","Application received!"),h("p","lead","Thank you. The CYBERJAY admin will now check your ID and business permit. Once you are approved, your business goes live on the marketplace with a 14-day Premium trial. You can log in now with your email and password to add your products and photos while you wait."),...(dm?[h("p","err",dm)]:[]),go)});
 const js2=jf.querySelectorAll("select");js2[0].addEventListener("change",()=>{js2[1].replaceChildren();[["","Choose sub-county / town"],...(KE[js2[0].value]||[]).map(t=>[t,t])].forEach(([v,l])=>{const op=h("option","",l);op.value=v;js2[1].append(op)})});
@@ -989,9 +996,7 @@ if(v&&v.status==="rejected")w.append(h("p","err","Your last submission was not a
 w.append(h("p","mut","Upload three clear photos: the FRONT and BACK of your National ID, and your business licence or permit. The name on the ID must match the owner name on your profile ("+b.ceo+"), and the permit must be for "+b.name+" and still valid. Only the holding admin can see them, and they are deleted automatically as soon as the review is finished."));
 w.append(form([["f","ID front","file"],["k","ID back","file"],["pm","Business licence or permit","file"],["ok","Do you agree to this?","select","no",[["no","No"],["yes","Yes, I agree"]]]],"Submit for verification",async o=>{
 if(o.ok!=="yes")throw new Error("Choose Yes, I agree to continue");if(!o.f||!o.k||!o.pm)throw new Error("Choose all three photos: ID front, ID back and your business licence or permit");
-const id=crypto.randomUUID(),pf=b.uid+"/front-"+id+".jpg",pk=b.uid+"/back-"+id+".jpg",pp=b.uid+"/permit-"+id+".jpg";
-await db(sb.storage.from("id-docs").upload(pf,await rz(o.f,1600),{contentType:"image/jpeg"}));await db(sb.storage.from("id-docs").upload(pk,await rz(o.k,1600),{contentType:"image/jpeg"}));await db(sb.storage.from("id-docs").upload(pp,await rz(o.pm,1600),{contentType:"image/jpeg"}));
-await db(sb.from("verifications").upsert({business_id:b.uid,status:"pending",front:pf,back:pk,permit:pp,submitted_at:new Date().toISOString(),decided_at:null,note:""}));await loadX();flash="Submitted. The holding admin will review your ID and business permit.";paint()}));return w}
+await sendDocs([await rz(o.f,1600),await rz(o.k,1600),await rz(o.pm,1600)]);await loadX();flash="Submitted. The holding admin will review your ID and business permit.";paint()}));return w}
 function plansV(){const w=h("div"),L=PR.filter(x=>x.status==="requested");w.append(h("h3","sec","Plan requests"));if(!L.length)w.append(h("p","mut","No plan requests waiting."));
 L.forEach(q=>{const b=S.biz.find(x=>x.uid===q.business_id);if(!b||!PL[q.plan])return;const of=offerInfo(b),use=q.plan==="premium"&&of.state==="active",full=q.plan==="premium"?CFG.pPrice:CFG.sPrice,c=h("div","card rowc"),r=h("div","row"),no=h("button","btn g","Decline");
 c.append(h("h4","",b.name),h("p","mut","Requested "+PL[q.plan].n+" (now "+PL[b.plan].n+"). Normal price KES "+full+(use?"; "+of.kind+" offer "+of.pct+"% off = KES "+of.price+" (valid until "+of.end+")":"")+". Confirm what they paid, then agree."));
