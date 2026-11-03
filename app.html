@@ -526,7 +526,19 @@ pause:'<path d="M8 5v14M16 5v14"/>',play:'<path d="M7 4.5v15l12-7.5z"/>',cl:'<pa
 const ic=k=>{const s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("class","ic");s.setAttribute("viewBox","0 0 24 24");s.setAttribute("aria-hidden","true");s.innerHTML=P[k];return s};
 const ext=(href,label,k,txt,cls)=>{const a=h("a",cls||"");a.href=href;a.target="_blank";a.rel="noopener noreferrer";a.setAttribute("aria-label",label);a.append(ic(k));if(txt)a.append(txt);return a};
 const wa=(b,m)=>/^\d{10,15}$/.test(b.wa)?"https://wa.me/"+b.wa+"?text="+encodeURIComponent(m):"#/";
-const igu=b=>/^[\w.]{1,30}$/.test(b.ig)?"https://instagram.com/"+b.ig:"#/";
+ const igu=b=>{
+  const v=String(b.ig||"").trim();
+  if(!v)return "#/";
+
+  if(/^https:\/\/(www\.)?instagram\.com\//i.test(v))
+    return v;
+
+  const username=v.replace(/^@/,"");
+  if(/^[A-Za-z0-9._]{1,30}$/.test(username))
+    return "https://www.instagram.com/"+username+"/";
+
+  return "#/";
+};
 const kes=n=>"KES "+Number(n).toLocaleString("en-KE"),age=t=>Math.max(0,Math.floor((Date.now()-t)/D));
 const ph=n=>{const t=n.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase().replace(/[^A-Z0-9]/g,"");
 return "data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c1c20"/><stop offset="1" stop-color="#3a1a05"/></linearGradient></defs><rect width="400" height="300" fill="url(#g)"/><path d="M0 220c80-40 140 30 220-10s120-40 180 0V300H0z" fill="#ff6a00" opacity=".18"/><text x="200" y="175" font-size="84" font-weight="700" text-anchor="middle" fill="#fff" opacity=".85" font-family="sans-serif">'+t+'</text></svg>')};
@@ -692,7 +704,13 @@ c.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.type!=="file")b.cl
 const rz=(f,mx=800)=>new Promise((ok,no)=>{if(!f||!/^image\/(jpeg|png|webp)$/.test(f.type)||f.size>8e6)return no(new Error("Choose a JPG, PNG or WebP photo under 8 MB"));const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const k=Math.min(1,mx/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext("2d").drawImage(i,0,0,c.width,c.height);c.toBlob(b=>b?ok(b):no(new Error("Could not process the photo")),"image/jpeg",.75)};i.onerror=()=>no(new Error("Could not read that image"));i.src=r.result};r.onerror=()=>no(new Error("Could not read that file"));r.readAsDataURL(f)});
 const nm=(v,l,min,max)=>{if(v.length<min||v.length>max)throw new Error(l+" must be "+min+"-"+max+" characters")};
 const price=v=>{const n=Math.round(Number(v));if(v===""||!Number.isFinite(n)||n<0||n>1e9)throw new Error("Enter a valid price in KES");return n};
-const contactCk=o=>{if(!/^\d{10,15}$/.test(o.wa))throw new Error("WhatsApp: digits only with country code, e.g. 2547XXXXXXXX");if(!/^[A-Za-z0-9._]{1,30}$/.test(o.ig))throw new Error("Instagram handle: letters, numbers, . or _")};
+const contactCk=o=>{
+  if(!/^\d{10,15}$/.test(o.wa))
+    throw new Error("WhatsApp: digits only with country code, e.g. 2547XXXXXXXX");
+
+  if(o.ig && o.ig.length > 100)
+    throw new Error("Instagram details must not exceed 100 characters");
+};
 const emailOk=v=>typeof v==="string"&&v.length<=254&&v===v.toLowerCase()&&/^[a-z0-9._%+-]{1,64}@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/.test(v);
 async function db(p){busy(1,"save");try{const r=await p;if(r.error)throw new Error("Not saved: "+String(r.error.message).slice(0,140));return r}finally{busy(-1,"save")}}
 async function whoami(){let r=await sb.from("profiles").select("role,business_id,username").maybeSingle(),hasU=true;if(r.error){hasU=false;r=await sb.from("profiles").select("role,business_id").maybeSingle()}
