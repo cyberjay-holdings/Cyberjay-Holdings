@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-R0BXZ/QXtTbNa6BsUb/osV2tojTYu6tF/yBWY2eGKOc=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-TLFaVsJlVuqOrPCNenpkq1Adr+QHI4nx1GiWRPnO6wg=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-j64McONWAMdZNNAv2+Q6UK95Mi10ci8dE1qy8zG/Ul4=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-TLFaVsJlVuqOrPCNenpkq1Adr+QHI4nx1GiWRPnO6wg=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#0a0a0b">
 <title>CYBERJAY Holdings | Businesses &amp; Marketplace</title>
@@ -791,7 +791,7 @@ for(let y=0;y<n-1;y++)for(let x=0;x<n-1;x++){const c=M[y][x];if(c===M[y][x+1]&&c
 let d=0;for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(M[y][x])d++;s+=Math.floor(Math.abs(d*20-n*n*10)/(n*n))*10;return s};
 let best=0,bp=1e9;for(let m=0;m<8;m++){flip(m);fmt(m);const p=pen();if(p<bp){bp=p;best=m}flip(m)}
 flip(best);fmt(best);return{n,get:(x,y)=>M[y][x]}}})();
-const qrUrl=(b,q)=>{const c=document.querySelector('link[rel="canonical"]'),here=location.protocol==="https:"?location.origin+location.pathname:"",base=here||(c&&c.href)||location.origin+location.pathname;return base.split("#")[0].split("?")[0]+(q?"?s=qr":"")+"#/b/"+b.id};
+const qrUrl=(b,q)=>{const c=document.querySelector('link[rel="canonical"]'),base=(c&&c.href)||location.origin+location.pathname;return base.split("#")[0].split("?")[0]+(q?"?s=qr":"")+"#/b/"+b.id};
 function qrSvg(b){const q=QR(qrUrl(b,1)),esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
 let d="";for(let y=0;y<q.n;y++)for(let x=0;x<q.n;x++)if(q.get(x,y))d+="M"+x+" "+y+"h1v1h-1z";
 const nm=String(b.name||"").trim(),fs=nm.length>34?76:nm.length>22?92:112,mx=Math.floor(1020/(fs*0.56)),ws=nm.split(/\s+/),ls=[""];ws.forEach(w=>{const c=ls[ls.length-1];if(c&&(c+" "+w).length>mx)ls.push(w);else ls[ls.length-1]=c?c+" "+w:w});const L=ls.slice(0,3);
