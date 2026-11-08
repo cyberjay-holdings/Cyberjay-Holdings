@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-h67455x1CP6sREf10fEaDb83+Vva7ylnGjLv/W6cxSs=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-ZFZGQLLKz7FuIMChv81dwl8dhSIdCzqsq19Fzkjquew=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-OhcrRyQTl6ROAJKAc4rsBwNlptabYw9o8+1A8ifGq8U=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-IuMYdWFxGlE6EOqHO2b4MsDoZ9FqKHeC4KdFq20TP/Y=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#0a0a0b">
 <title>CYBERJAY Holdings | Businesses &amp; Marketplace</title>
@@ -274,6 +274,20 @@ details.hw-q{border:1px solid var(--line);border-radius:18px;background:var(--ca
 .pwrap{position:relative;display:block}.pwrap input{width:100%;padding-right:3.2rem}.pweye{position:absolute;right:.45rem;top:50%;transform:translateY(-50%);width:2.4rem;height:2.4rem;border:0;border-radius:50%;background:transparent;color:var(--mut);display:grid;place-items:center;cursor:pointer}.pweye:hover,.pweye:focus-visible{color:var(--tx)}
 .ephs{display:flex;flex-wrap:wrap;gap:.5rem}.eph{position:relative;display:inline-block}.eph img{width:96px;height:96px;object-fit:cover;border-radius:16px;display:block}.eph button{position:absolute;padding:.1rem .55rem;font-size:.75rem;line-height:1.4;min-width:0;border-radius:99px}.eph .x{top:4px;right:4px}.eph .cv{bottom:4px;left:4px}
 .gal.svg3{grid-template-columns:repeat(auto-fill,minmax(min(100%,440px),1fr));gap:1.8rem}.it.svc{display:block;padding:0;border-radius:30px}.it.svc .pic,.it.svc .sld{aspect-ratio:5/4}.it.svc .inf h4{font-size:1.25rem}
+body.solo .hdr,body.solo .foot,body.solo #pan{display:none!important}
+body.solo .hero.sohero{padding:3.5rem 0 4.5rem}.sohero .wrap{position:relative;z-index:1}
+.sban{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.3;z-index:0}
+body.solo main section[id]{scroll-margin-top:7rem}
+.sonav{position:sticky;top:0;z-index:40;display:flex;flex-wrap:wrap;align-items:center;gap:.3rem .8rem;padding:.55rem 4%;background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.sonm{display:flex;align-items:center;gap:.6rem;min-width:0;flex:1 1 0;background:none;border:0;font-weight:700;color:var(--tx);text-align:left}.sonm b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+body.solo .card>p+.row{margin-top:1rem}.sol.th{margin-left:auto;border:1px solid var(--line)}
+.soact{display:flex;gap:.4rem;align-items:center}.sonav .btn{padding:.5rem 1rem;font-size:.85rem}
+.solinks{order:3;width:100%;display:flex;gap:.25rem;overflow-x:auto;scrollbar-width:none}.solinks::-webkit-scrollbar{display:none}
+.sol{background:none;border:0;padding:.45rem .9rem;border-radius:99px;font-size:.88rem;font-weight:600;color:var(--mut);white-space:nowrap}.sol:hover,.sol.on{color:var(--tx);background:color-mix(in srgb,var(--ac) 18%,transparent)}
+@media(min-width:820px){.solinks{order:0;width:auto;margin:0 auto}.sonm{flex:0 0 auto}.sol.th{margin-left:.5rem}}
+.slogo{width:2.3rem;height:2.3rem;border-radius:50%;background:var(--ac);color:var(--on);display:grid;place-items:center;font-weight:700;font-size:.8rem;flex:none}
+.slogo.big{width:4.4rem;height:4.4rem;font-size:1.45rem;margin-bottom:.8rem}
+.sofoot{border-top:1px solid var(--line);background:var(--bg2);padding:1.8rem 4%;text-align:center;color:var(--mut);font-size:.85rem}.sofoot a{color:var(--acT);text-decoration:underline}.sofoot p+p{margin-top:.3rem}
 </style>
 </head>
 <body>
@@ -510,7 +524,7 @@ const loadView=m=>{const d=h("div","load"),o=h("div","co big"),i=document.create
 async function doRefresh(){if(!sb){fail="Could not load the database library.";return false}
 const [a,b]=await Promise.all([sb.from("businesses").select("*").order("sort").order("created_at"),sb.from("items").select("*")]);
 if(a.error||b.error){fail="Could not load data. Please refresh.";return false}fail="";
-const n=a.data.map(x=>({id:x.slug,hidden:!!x.hidden,approved:x.approved!==false,rv:x.reviewed===false,plan:effPlan(x),planRaw:PL[x.plan]?x.plan:"free",until:x.plan_until||"",trial:!!x.trial,adUntil:x.ad_until||"",adText:x.ad_text||"",joined:(x.created_at||"").slice(0,10),county:x.county||"",sub:x.subcounty||"",lmk:x.landmark||"",trialUntil:x.trial_until||"",offerUsed:!!x.offer_used,offerUsedAt:x.offer_used_at||"",verified:!!x.verified&&effPlan(x)!=="free",bp:x.banner||"",banner:x.banner?SB_URL+"/storage/v1/object/public/item-photos/"+x.banner.split("/").map(encodeURIComponent).join("/"):"",uid:x.id,name:x.name,tag:x.tag,sells:x.sells,ceo:x.ceo,loc:x.loc,hrs:x.hrs,since:x.since,wa:x.wa,ig:x.ig,services:x.services||[],
+const n=a.data.map(x=>({id:x.slug,hidden:!!x.hidden,approved:x.approved!==false,rv:x.reviewed===false,plan:effPlan(x),planRaw:PL[x.plan]?x.plan:"free",until:x.plan_until||"",trial:!!x.trial,adUntil:x.ad_until||"",adText:x.ad_text||"",joined:(x.created_at||"").slice(0,10),county:x.county||"",sub:x.subcounty||"",lmk:x.landmark||"",trialUntil:x.trial_until||"",offerUsed:!!x.offer_used,offerUsedAt:x.offer_used_at||"",verified:!!x.verified&&effPlan(x)!=="free",bp:x.banner||"",banner:x.banner?SB_URL+"/storage/v1/object/public/item-photos/"+x.banner.split("/").map(encodeURIComponent).join("/"):"",brand:OPT.accent.includes(x.brand)?x.brand:"",mode:x.site_mode==="community"?"community":"",uid:x.id,name:x.name,tag:x.tag,sells:x.sells,ceo:x.ceo,loc:x.loc,hrs:x.hrs,since:x.since,wa:x.wa,ig:x.ig,services:x.services||[],
 items:b.data.filter(i=>i.business_id===x.id).map(i=>({id:i.id,n:i.name,p:i.price,img:okpA(i.img)?pu(i.img):"",sold:i.sold,kind:i.kind==="service"?"service":"product",dur:i.duration||"",det:i.details||"",gp:i.gallery||[],gal:(Array.isArray(i.gallery)?i.gallery:[]).filter(okpA).slice(0,4).map(g=>pu(g)),q:i.qty,sq:i.sold_qty,rv:Number(i.revenue),t:Date.parse(i.listed_at),s:i.sold_at?Date.parse(i.sold_at):0}))}));n.forEach(guessLoc);last=Date.now();const g=JSON.stringify(n),ch=g!==sig;sig=g;S.biz=n;ready=true;try{localStorage.setItem("cj-c10",g)}catch(e){try{sessionStorage.setItem("cj-c10",g)}catch(z){}}return ch}
 const $=s=>document.querySelector(s),app=$("#app");
 const h=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
@@ -538,7 +552,8 @@ const stats=b=>{const pr=b.items.filter(x=>x.kind!=="service"),i=pr.filter(x=>!x
 const OPT={theme:[["dark","Black"],["light","White"],["rose","Rose Noir (plum & rose gold)"]],accent:["orange","blue","green","purple","slate"],font:[["sora","Sora (modern)"],["cinzel","Cinzel (royal)"],["playfair","Playfair (elegant)"],["oswald","Oswald (bold)"],["fredoka","Fredoka (friendly)"],["mono","Mono (tech)"],["access","Easy to read"]],size:[["s","Small"],["m","Normal"],["l","Large"],["xl","Extra large"]]};
 const DEF={theme:"dark",accent:"orange",font:"sora",size:"m"};let PF={};try{PF=JSON.parse(localStorage.getItem("cj-pref"))||{}}catch(e){}if(PF.theme==="modern"||PF.theme==="royal")PF.theme="rose";if(PF.theme==="teal"||PF.theme==="crimson")PF.theme="rose";if(PF.theme==="royal")PF.theme="modern";
 const FF={cinzel:"Cinzel:wght@500;700",playfair:"Playfair+Display:wght@500;700",oswald:"Oswald:wght@400;500;600",fredoka:"Fredoka:wght@400;500;600",access:"Atkinson+Hyperlegible:wght@400;700"},lfd=new Set(),lf=k=>{if(FF[k]&&!lfd.has(k)){lfd.add(k);const l=document.createElement("link");l.rel="stylesheet";l.href="https://fonts.googleapis.com/css2?family="+FF[k]+"&display=swap";document.head.append(l)}};
-function applyPf(){lf(PF.font);const r=document.documentElement;for(const g in OPT){if(PF[g])r.dataset[g]=PF[g];else delete r.dataset[g]}
+let soAcc="";
+function applyPf(){lf(PF.font);const r=document.documentElement;for(const g in OPT){if(PF[g])r.dataset[g]=PF[g];else delete r.dataset[g]}if(soAcc)r.dataset.accent=soAcc;
 document.querySelectorAll("#pan [data-g]").forEach(b=>b.setAttribute("aria-pressed",String((PF[b.dataset.g]||DEF[b.dataset.g])===b.dataset.v)));try{localStorage.setItem("cj-pref",JSON.stringify(PF))}catch(e){}}
 (function(){const p=$("#pan"),L={theme:"Theme",accent:"Colour",font:"Font",size:"Text size"};for(const g in OPT){p.append(h("h5","",L[g]));const w=h("div","opt");OPT[g].forEach(o=>{const v=Array.isArray(o)?o[0]:o,b=h("button",g==="accent"?"sw":"seg",g==="accent"?null:o[1]);b.dataset.g=g;b.dataset.v=v;if(g==="accent")b.setAttribute("aria-label",v);w.append(b)});p.append(w)}
 p.addEventListener("click",e=>{const b=e.target.closest("[data-g]");if(b){PF[b.dataset.g]=b.dataset.v;applyPf()}});
@@ -618,7 +633,48 @@ addEventListener("hashchange",closeInspect);
 function svcCard(b,x){const c=h("article","card it svc"),p=h("div","pic");p.append(photoSlider(x.n,itemPics(x),()=>inspect(b,x)));c.append(p);
 const n=h("div","inf");n.append(h("h4","",x.n),h("span","pr","From "+kes(x.p)),h("span","chip","\u23F1 "+(x.dur||"Ask for duration")));if(x.det)n.append(h("p","dsc",x.det));const vd=h("button","btn g","View details");vd.type="button";vd.addEventListener("click",()=>inspect(b,x));n.append(vd);
 n.append(ext(wa(b,"Hello "+b.name+", I would like to book an appointment for: "+x.n+" (from "+kes(x.p)+", "+(x.dur||"duration to confirm")+"). Please share your available dates and times."),"Book an appointment for "+x.n+" on WhatsApp","wa",T("book"," Book Appointment"),"btn p"));c.append(n);return c}
-function biz(b){const f=document.createDocumentFragment(),s=h("section","hero"),w=h("div","wrap");
+const BRN={orange:"Orange",blue:"Blue",green:"Green",purple:"Purple",slate:"Slate"};
+const soloOk=b=>!!b&&b.plan==="premium"&&!b.hidden&&b.approved&&b.mode!=="community";
+const ini=n=>String(n).trim().split(/\s+/).map(w=>w.replace(/[^A-Za-z0-9]/g,"")).filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("")||"•";
+const soLogo=(b,big)=>h("div","slogo"+(big?" big":""),ini(b.name));
+let soIO=null;
+function soFoot(b){const f=h("footer","sofoot"),a=h("a","","CYBERJAY Holdings");a.href="#/";const p=h("p");p.append("Powered by ",a,b.verified?" · Verified seller":"");
+const l=h("p"),t=h("a","","Terms"),v=h("a","","Privacy"),j=h("a","","Open your own shop free");t.href="#/terms";v.href="#/privacy";j.href="#/join";l.append(t," · ",v," · ",j);f.append(h("p","",String.fromCharCode(169)+" "+new Date().getFullYear()+" "+b.name),p,l);return f}
+function site(b){const x=biz(b,true),f=document.createDocumentFragment(),sv=b.services||[];
+const hs=h("section","hero sohero"),hw=h("div","wrap"),hb=h("div","row"),fc=h("div","row");hs.id="home";
+if(b.banner){const im=h("img","sban");im.src=b.banner;im.alt="";hs.append(im)}
+if(x.shop){const k=h("button","btn p","Shop now");k.type="button";k.dataset.scroll="shop";hb.append(k)}
+hb.append(ext(wa(b,"Hello "+b.name+", I would like to enquire."),"Chat with "+b.name+" on WhatsApp","wa"," WhatsApp us","btn "+(x.shop?"g":"p")));
+[b.loc,b.hrs&&"Open "+b.hrs].filter(Boolean).forEach(t=>fc.append(h("span","chip",t)));
+hw.append(soLogo(b,1),h("h1","",b.name),...(b.verified?[vb()]:[]),h("p","eyebrow",b.tag),h("p","lead",b.sells),hb,fc);hs.append(hw);
+if(x.shop)x.shop.id="shop";
+let sc=null;if(sv.length){sc=h("section","sheet");sc.id="services";const w=h("div","wrap"),hd=h("div","sh");hd.append(h("h2","","Services"),h("p","","Tap a service to request it directly on WhatsApp."));w.append(hd);sv.forEach(v=>{const e=h("div","svc");e.append(h("b","",v),ext(wa(b,"Hello "+b.name+", I need: "+v),"Request "+v+" on WhatsApp","wa",T("request","Request"),"btn g"));w.append(e)});sc.append(w)}
+const ab=h("section","sheet alt"),aw=h("div","wrap"),ah=h("div","sh"),d=h("div","card det");ab.id="about";ah.append(h("h2","","About us"));
+[[T("dBusiness","Business"),b.name],[T("dCeo","CEO"),b.ceo],[T("dCategory","Category"),b.tag],[T("dLocation","Location"),b.loc],[T("dOpen","Open"),b.hrs],[T("dSince","Since"),b.since]].forEach(([k,v])=>{if(!v)return;const e=h("div");e.append(h("span","mut",k),h("b","",v));d.append(e)});aw.append(ah,d,trust(b));ab.append(aw);
+const ct=h("section","sheet"),cw=h("div","wrap"),ch=h("div","sh"),cd=h("div","card"),cr=h("div","row");ct.id="contact";ch.append(h("h2","","Contact us"),h("p","","Message us on WhatsApp for orders, prices and bookings."));
+cr.append(ext(wa(b,"Hello "+b.name+", I would like to enquire."),"Chat with "+b.name+" on WhatsApp","wa"," WhatsApp us","btn p"));if(b.ig)cr.append(ext(igu(b),b.name+" on Instagram","ig"," Instagram","btn g"));
+const cp=h("button","btn g","Copy website link");cp.type="button";cp.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(qrUrl(b));cp.textContent="Link copied"}catch(e){cp.textContent="Press and hold the address bar to copy"}});cr.append(cp);
+cd.append(...[b.loc&&"Find us: "+b.loc,b.hrs&&"Open: "+b.hrs].filter(Boolean).map(t=>h("p","",t)),cr);cw.append(ch,cd);ct.append(cw);
+const L=[["Home","home"],x.shop&&["Shop","shop"],(sc||x.appt)&&["Services",sc?"services":"appt"],["About","about"],["Contact","contact"]].filter(Boolean);
+const nv=h("nav","sonav"),bn=h("button","sonm"),ac=h("div","soact"),ln=h("div","solinks"),th=h("button","sol th","");nv.setAttribute("aria-label",b.name+" website menu");
+bn.type="button";bn.dataset.scroll="home";bn.append(soLogo(b),h("b","",b.name));
+const thL=()=>{th.textContent=(PF.theme||"dark")==="light"?"Dark":"Light";th.setAttribute("aria-label","Switch to "+th.textContent.toLowerCase()+" mode")};th.type="button";thL();th.addEventListener("click",()=>{PF.theme=(PF.theme||"dark")==="light"?"dark":"light";applyPf();thL()});
+ac.append(ext(wa(b,"Hello "+b.name+", I would like to enquire."),"Chat with "+b.name+" on WhatsApp","wa"," WhatsApp","btn p"));
+const lk=L.map(([l,id])=>{const k=h("button","sol",l);k.type="button";k.dataset.scroll=id;ln.append(k);return k});ln.append(th);nv.append(bn,ln,ac);
+f.append(nv,hs);[x.shop,sc,x.appt,ab,ct].forEach(e=>{if(e)f.append(e)});f.append(soFoot(b));
+if(soIO)soIO.disconnect();try{soIO=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)lk.forEach(k=>k.classList.toggle("on",k.dataset.scroll===e.target.id))})},{rootMargin:"-30% 0px -60% 0px"});L.forEach(([l,id])=>{const e=[hs,x.shop,sc,x.appt,ab,ct].find(z=>z&&z.id===id);if(e)soIO.observe(e)})}catch(e){}
+return f}
+function siteCard(b){const c=h("div","card");
+if(b.plan!=="premium"){c.append(h("h4","","Your own website (Premium)"),h("p","mut","With Premium, your QR code and link open your own website page: menu bar, shop, services, about and contact, in your colour. You choose whether it stands alone or sits with the other businesses in the community."));const u=h("button","btn p","See the Premium plan");u.type="button";u.addEventListener("click",()=>{tab="plan";paint()});c.append(u);return c}
+const alone=soloOk(b),save=async(patch,ok)=>{try{await db(sb.from("businesses").update(patch).eq("id",b.uid));await refresh();flash=ok}catch(e){flash=/brand|site_mode|column/i.test(String(e&&e.message))?"This could not be saved yet. Ask the holding admin to run the one-line website setup (SQL).":(e&&e.message)||"Could not save"}paint()};
+c.append(h("h4","","Your own website"),h("p","mut","Choose what customers see when they scan your QR code or open your link."));
+const r1=h("div","row"),a1=h("button","btn "+(alone?"p":"g"),"Alone: my own website"),a2=h("button","btn "+(alone?"g":"p"),"Community: with other businesses");a1.type=a2.type="button";a1.setAttribute("aria-pressed",String(alone));a2.setAttribute("aria-pressed",String(!alone));
+a1.addEventListener("click",()=>{if(!alone)save({site_mode:"alone"},"Your link and QR code now open your own website.")});a2.addEventListener("click",()=>{if(alone)save({site_mode:"community"},"Your link and QR code now open your page inside the community.")});r1.append(a1,a2);
+c.append(r1,h("p","mut",alone?"Alone: customers see only your business, with your own menu bar, shop, services, about and contact. No other businesses are shown.":"Community: customers see your normal page inside CYBERJAY, with the menu and the other businesses."));
+if(alone){c.append(h("p","","Your website colour"));const cur=b.brand,sw=h("div","opt");OPT.accent.forEach(k=>{const z=h("button","sw");z.type="button";z.dataset.v=k;z.title=BRN[k];z.setAttribute("aria-label",BRN[k]+" colour");z.setAttribute("aria-pressed",String((cur||"orange")===k));z.addEventListener("click",()=>save({brand:k},"Website colour saved."));sw.append(z)});c.append(sw)}
+const link=qrUrl(b),r=h("div","row"),pv=h("a","btn p","Preview my link"),cl=h("button","btn g","Copy link");pv.href=alone?"#/s/"+b.id:"#/b/"+b.id;cl.type="button";cl.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(link);cl.textContent="Copied"}catch(e){cl.textContent="Select and copy the link below"}});
+r.append(pv,cl);c.append(r,h("p","mut","Your link: "+link));return c}
+function biz(b,so){const f=document.createDocumentFragment(),s=h("section","hero"),w=h("div","wrap");
 const back=h("a","chip",T("back","\u2190 All businesses"));back.href="#/";
 w.append(back,h("h1","",b.name),...(b.verified?[vb()]:[]),h("p","eyebrow",b.tag),h("p","lead",b.sells));
 const r=h("div","row");r.append(contact(b,"Hello "+b.name+", I would like to enquire."));w.append(r);
@@ -627,7 +683,7 @@ const s1=h("section","sheet");s1.id="svc";const w1=h("div","wrap"),d=h("div","ca
 [[T("dBusiness","Business"),b.name],[T("dCeo","CEO"),b.ceo],[T("dCategory","Category"),b.tag],[T("dLocation","Location"),b.loc],[T("dOpen","Open"),b.hrs],[T("dSince","Since"),b.since]].forEach(([k,v])=>{const e=h("div");e.append(h("span","mut",k),h("b","",v));d.append(e)});
 const h1=h("div","sh");h1.append(h("h2","",T("svcTitle","Services")),h("p","",T("svcSub","Tap a service to request it directly.")));w1.append(trust(b),d,h1);
 (b.services&&b.services.length?b.services:["Ask about our products and services"]).forEach(v=>{const e=h("div","svc");e.append(h("b","",v),ext(wa(b,"Hello "+b.name+", I need: "+v),"Request "+v+" on WhatsApp","wa",T("request","Request"),"btn g"));w1.append(e)});s1.append(w1);
-const s2=h("section","sheet alt");s2.id="gal";const w2=h("div","wrap"),h2=h("div","sh");h2.append(h("h2","",T("saleTitle","On sale")),h("p","",T("saleSub","Tap Add to list on anything you want, then purchase on WhatsApp. Sold items stay visible with a SOLD stamp.")));w2.append(h2);
+const s2=h("section","sheet alt");s2.id="gal";const w2=h("div","wrap"),h2=h("div","sh");h2.append(h("h2","",so?"Shop":T("saleTitle","On sale")),h("p","",T("saleSub","Tap Add to list on anything you want, then purchase on WhatsApp. Sold items stay visible with a SOLD stamp.")));w2.append(h2);
 const cc=cartCard(b);if(cc)w2.append(cc);
 const g=h("div","gal"),inl=(cart[b.id]||[]);b.items.filter(i=>i.kind!=="service").sort((a,c)=>a.sold-c.sold||c.t-a.t).forEach(i=>{const c=h("article","card it"+(i.sold?" sold":"")),p=h("div","pic");p.append(photoSlider(i.n+(i.sold?" (sold)":""),itemPics(i),()=>inspect(b,i)));
 if(i.sold){const m=h("div","mark");m.append(h("span","",T("soldStamp","SOLD")));p.append(m)}
@@ -636,7 +692,7 @@ if(i.sold)n.append(h("span","chip",T("gone","No longer available")));else{if(i.q
 const vd=h("button","btn g","View details");vd.type="button";vd.addEventListener("click",()=>inspect(b,i));n.append(vd);c.append(p,n);g.append(c)});w2.append(g);s2.append(w2);
 const sv=b.items.filter(i=>i.kind==="service"),np=b.items.length-sv.length;let s3=null;
 if(sv.length){s3=h("section","sheet"+(np?"":" alt"));s3.id="appt";const w3=h("div","wrap"),h3=h("div","sh"),g3=h("div","gal svg3");h3.append(h("h2","",T("apptTitle","Services & appointments")),h("p","",T("apptSub","Browse our past work, then book a time on WhatsApp.")));sv.forEach(x=>g3.append(svcCard(b,x)));w3.append(h3,g3);s3.append(w3)}
-f.append(s,s1);if(np||!sv.length)f.append(s2);if(s3)f.append(s3);return f}
+if(so)return{shop:(np||!sv.length)?s2:null,appt:s3};f.append(s,s1);if(np||!sv.length)f.append(s2);if(s3)f.append(s3);return f}
 function how(sub){document.title="How it works | CYBERJAY Holdings";
 const f=document.createDocumentFragment(),s=h("section","hero"),w=h("div","wrap"),fd=d=>new Date(Date.parse(d+"T00:00:00Z")).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric",timeZone:"UTC"});
 w.append(h("p","eyebrow","How it works"),h("h1","","Simple for buyers. Powerful for business owners."),h("p","lead","CYBERJAY Holdings is a marketplace where every business runs its own storefront. You browse here and deal directly with the owner on WhatsApp. No hidden checkout, no middlemen."));s.append(w);
@@ -652,7 +708,7 @@ const fp=CFG.fPct,np=CFG.nPct,l0=/^\d{4}-\d{2}-\d{2}$/.test(CFG.launch)?CFG.laun
 po.append(grid([stp(1,"Register for free","Tap Register your business. Confirm your email with a 6-digit code, fill in your details, upload your ID and business permit, and choose a password (10+ characters). You can log in straight away and add your products."),stp(2,"We welcome you","Send your ID and permit from the Verify tab in your account. The CYBERJAY admin checks them. Once you are approved, your business goes live with a 14-day Premium trial and a discount on your first Premium month."),stp(3,"Log in and add stock","Use Business login. Add products or services with up to 4 photos each. Edit prices, quantities and descriptions any time."),stp(4,"Customers message you","Shoppers send their list straight to your WhatsApp. Mark items SOLD in your panel so nobody chases stock that is gone."),stp(5,"Grow your business","Get the Verified Seller badge, run a sponsored ad on the home page, and download your own QR code card to print and share. Everything is in your panel.")]));
 if(l0){const c=h("div","card hw-offer");c.append(h("h3","","Launch offer"),h("p","","Register between "+fd(l0)+" and "+fd(addDays(l0,CFG.fDays-1))+" and you are a Founding member: "+fp+"% off your first Premium month. Register later and you still get "+np+"% off. The offer starts when your trial ends and lasts "+CFG.oDays+" days."));po.append(h("div","sh sec"),c)}
 po.append(h("h3","sec","Plans"));
-{const FE={free:["Up to 3 products","Direct WhatsApp access"],standard:["Up to 15 products","Use your admin panel","WhatsApp and Instagram access","Can get the Verified Seller badge"],premium:["Everything in Standard, plus:","Unlimited products","Homepage banner spot","Priority search rank","Use your admin panel","WhatsApp and Instagram access","Can get the Verified Seller badge"]},DP={free:"Free",standard:"KES 299 / month",premium:"KES 699 / month"},g=h("div","cols");
+{const FE={free:["Up to 3 products","Direct WhatsApp access"],standard:["Up to 15 products","Use your admin panel","WhatsApp and Instagram access","Can get the Verified Seller badge"],premium:["Everything in Standard, plus:","Unlimited products","Your own website page and QR link","Homepage banner spot","Priority search rank","Use your admin panel","WhatsApp and Instagram access","Can get the Verified Seller badge"]},DP={free:"Free",standard:"KES 299 / month",premium:"KES 699 / month"},g=h("div","cols");
 ["free","standard","premium"].forEach(k=>{const c=h("div","card"),u=h("ul","note");FE[k].forEach(x=>u.append(h("li","",x)));c.append(h("h3","",PL[k].n),h("p","pr",T("price"+k[0].toUpperCase()+k.slice(1),DP[k])),u);g.append(c)});po.append(g);
 po.append(h("p","mut",T("payNote","Pay the holding admin as agreed. When your payment is confirmed your plan is activated.")+" Sponsored ads on the home page cost "+T("adWeek","KES 200 / week")+" or "+T("adMonth","KES 600 / month")+"."))}
 {const r=h("div","hw-cta"),a=h("a","btn p","Register your business"),b=h("a","btn g","Business login");a.href="#/join";b.href="#/chamber";r.append(a,b);const x=wl("Ask us a question");if(x)r.append(x);po.append(r)}
@@ -747,7 +803,7 @@ for(let y=0;y<n-1;y++)for(let x=0;x<n-1;x++){const c=M[y][x];if(c===M[y][x+1]&&c
 let d=0;for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(M[y][x])d++;s+=Math.floor(Math.abs(d*20-n*n*10)/(n*n))*10;return s};
 let best=0,bp=1e9;for(let m=0;m<8;m++){flip(m);fmt(m);const p=pen();if(p<bp){bp=p;best=m}flip(m)}
 flip(best);fmt(best);return{n,get:(x,y)=>M[y][x]}}})();
-const qrUrl=(b,q)=>{const c=document.querySelector('link[rel="canonical"]'),base=(c&&c.href)||location.origin+location.pathname;return base.split("#")[0].split("?")[0]+(q?"?s=qr":"")+"#/b/"+b.id};
+const qrUrl=(b,q)=>{const c=document.querySelector('link[rel="canonical"]'),base=(c&&c.href)||location.origin+location.pathname;return base.split("#")[0].split("?")[0]+(q?"?s=qr":"")+"#/"+(soloOk(b)?"s":"b")+"/"+b.id};
 function qrSvg(b){const q=QR(qrUrl(b,1)),m=520/(q.n+8),esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
 let d="";for(let y=0;y<q.n;y++)for(let x=0;x<q.n;x++)if(q.get(x,y))d+="M"+x+" "+y+"h1v1h-1z";
 const nm=String(b.name||"").trim(),fs=nm.length>34?38:nm.length>22?46:56,mx=Math.floor(620/(fs*0.56)),ws=nm.split(/\s+/),ls=[""];ws.forEach(w=>{const c=ls[ls.length-1];if(c&&(c+" "+w).length>mx)ls.push(w);else ls[ls.length-1]=c?c+" "+w:w});const L=ls.slice(0,3);
@@ -766,7 +822,7 @@ const dp=h("button","btn p","Download card (PNG)"),ds=h("button","btn g","Downlo
 dp.addEventListener("click",()=>{const i2=new Image();i2.onload=()=>{const k=document.createElement("canvas"),sc=2;k.width=i2.naturalWidth*sc||1440;k.height=i2.naturalHeight*sc||2000;const x=k.getContext("2d");x.drawImage(i2,0,0,k.width,k.height);k.toBlob(bl=>{if(bl)sv(bl,fn+".png")},"image/png")};i2.src=uri});
 ds.addEventListener("click",()=>sv(new Blob([svg],{type:"image/svg+xml"}),fn+".svg"));
 cl.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(link);cl.textContent="Copied"}catch(e){cl.textContent="Select and copy the link below"}});
-r.append(dp,ds,cl);c.append(h("h4","","Your permanent QR code"),h("p","mut","This card was made automatically when your business was created. Anyone who scans it lands directly on "+b.name+". It never changes, so you can print it, put it on your shop, receipts or social media."),im,r,h("p","mut","Link inside the code: "+link));w.append(c);return w}
+r.append(dp,ds,cl);c.append(h("h4","","Your permanent QR code"),h("p","mut","This card was made automatically when your business was created. Anyone who scans it lands directly on "+b.name+". It never changes, so you can print it, put it on your shop, receipts or social media."),im,r,h("p","mut","Link inside the code: "+link));w.append(siteCard(b),c);return w}
 
 const VID=(()=>{try{let v=localStorage.getItem("cj-vid");if(!v||!/^[A-Za-z0-9-]{8,64}$/.test(v)){v=(crypto.randomUUID&&crypto.randomUUID())||(Date.now().toString(36)+Math.random().toString(36).slice(2,12));localStorage.setItem("cj-vid",v)}return v}catch(e){return""}})();
 let trkRef=true,trkLast="";
@@ -803,7 +859,7 @@ box.replaceChildren(tl,cc,g)});return w}
 const needsOk=b=>!b.approved||b.rv;
 function room(){const hold=me.role==="holding",b=hold?null:S.biz.find(x=>x.id===me.biz);if(!hold&&!b){me=null;return login()}
 const w=h("div"),bar=h("div","row bar"),lo=h("button","btn g","Log out");lo.addEventListener("click",async()=>{await sb.auth.signOut();me=null;tip="";rst=null;HX=[];MS=[];bellOpen=false;thread="";paint()});bar.append(h("h3","",hold?"Holding admin \u00b7 CYBERJAY":b.name+" \u00b7 Admin"),bell(),lo);
-const pn=S.biz.filter(needsOk).length,qn=PR.filter(x=>x.status==="requested").length,vn=VR.filter(x=>x.status==="pending").length,an=AR.filter(x=>x.status==="requested").length,T=me.must?[["pw","Set your password"]]:me.needUser?[["uname","Choose your username"]]:(hold?[["apps","Applications"+(pn?" ("+pn+")":"")],["members","Members"],["admins","Admins"],["biz","Businesses"],["vis","Visitors"],["plans","Plans"+(qn?" ("+qn+")":"")],["ver","Verification"+(vn?" ("+vn+")":"")],["ads","Ads"+(an?" ("+an+")":"")],["reg","Register business"]]:[["stock","Stock & cash flow"],["add","Add item"],["prof","Profile"],["qr","QR code"],["plan","Plan"],["verify","Verify"],["ads","Ads"]]).concat([["pw","Password"]]);
+const pn=S.biz.filter(needsOk).length,qn=PR.filter(x=>x.status==="requested").length,vn=VR.filter(x=>x.status==="pending").length,an=AR.filter(x=>x.status==="requested").length,T=me.must?[["pw","Set your password"]]:me.needUser?[["uname","Choose your username"]]:(hold?[["apps","Applications"+(pn?" ("+pn+")":"")],["members","Members"],["admins","Admins"],["biz","Businesses"],["vis","Visitors"],["plans","Plans"+(qn?" ("+qn+")":"")],["ver","Verification"+(vn?" ("+vn+")":"")],["ads","Ads"+(an?" ("+an+")":"")],["reg","Register business"]]:[["stock","Stock & cash flow"],["add","Add item"],["prof","Profile"],["qr","QR & website"],["plan","Plan"],["verify","Verify"],["ads","Ads"]]).concat([["pw","Password"]]);
 if(!T.some(x=>x[0]===tab))tab=T[0][0];
 const tb=h("div","sub");T.forEach(([k,l])=>{const x=h("button","btn "+(k===tab?"p":"g"),l);x.addEventListener("click",()=>{tab=k;tip="";rst=null;rerr=null;paint();if(me&&me.role==="holding"&&["apps","members","plans","ver","ads"].includes(k))Promise.all([refresh(),loadX()]).then(()=>{if(tab===k&&me)paint()}).catch(()=>{})});tb.append(x)});
 w.append(bar,tb);if(bellOpen)w.append(panel());if(me.must)w.append(h("p","err","Welcome! Please set your own password to continue."));if(flash){const f=h("p","err",flash);f.setAttribute("role","status");w.append(f);flash=""}
@@ -982,7 +1038,7 @@ await refresh();flash="Service added.";tab="stock";paint()})}
 function addV(b){const lim=PL[b.plan].lim,used=b.items.filter(x=>!x.sold).length,w=h("div");w.append(h("p","mut",PL[b.plan].n+" plan: "+used+" of "+(lim===Infinity?"unlimited":lim)+" listings (products and services) in use."));const tl=h("a","chip","By listing you agree to the Terms & Conditions");tl.href="#/terms";tl.target="_blank";tl.rel="noopener";w.append(tl);
 if(used>=lim)w.append(h("p","err","You have reached your plan limit. Upgrade in the Plan tab to add more products."));else{const sg=h("div","row");[["product","Add a product"],["service","Add a service"]].forEach(([k,l])=>{const x=h("button","btn "+(addKind===k?"p":"g"),l);x.addEventListener("click",()=>{addKind=k;paint()});sg.append(x)});w.append(sg,addKind==="service"?addService(b):addForm(b))}return w}
 function planV(b){const w=h("div"),cur=b.plan,pi=planInfo(b),of=offerInfo(b),pend=PR.find(x=>x.business_id===b.uid&&x.status==="requested"),f=h("div","cols");
-const FE={free:["Up to 3 products","Direct WhatsApp access"],standard:["Up to 15 products","Use your admin panel","WhatsApp and Instagram access","Eligible for the Verified Seller badge (ID check)"],premium:["Everything in Standard, plus:","Unlimited products","Homepage banner spot","Priority search rank","Use your admin panel","WhatsApp and Instagram access","Eligible for the Verified Seller badge (ID check)"]},DP={free:"Free",standard:"KES 299 / month",premium:"KES 699 / month"};
+const FE={free:["Up to 3 products","Direct WhatsApp access"],standard:["Up to 15 products","Use your admin panel","WhatsApp and Instagram access","Eligible for the Verified Seller badge (ID check)"],premium:["Everything in Standard, plus:","Unlimited products","Your own website page and QR link","Homepage banner spot","Priority search rank","Use your admin panel","WhatsApp and Instagram access","Eligible for the Verified Seller badge (ID check)"]},DP={free:"Free",standard:"KES 299 / month",premium:"KES 699 / month"};
 ["free","standard","premium"].forEach(k=>{const c=h("div","card"),ul=h("ul","note");FE[k].forEach(x=>ul.append(h("li","",x)));
 c.append(h("h3","",PL[k].n+(k===cur?" \u2713 (your plan)":"")),h("p","pr",k==="premium"&&of.state==="active"?T("pricePremium",DP[k])+"  \u2192  KES "+of.price+" first month ("+of.pct+"% off)":T("price"+k[0].toUpperCase()+k.slice(1),DP[k])),ul);
 if(k!=="free"&&(RK[k]>RK[cur]||b.trial||(pi.d!==null&&pi.d<=5))){const sent=pend&&pend.plan===k,bt=h("button","btn "+(sent?"g":"p"),sent?"Request sent":"Request "+PL[k].n);bt.disabled=!!pend;bt.addEventListener("click",async()=>{try{await db(sb.from("plan_requests").insert({business_id:b.uid,plan:k}));await loadX();flash="Request sent. "+T("payNote","Pay the holding admin, who will then activate your plan.")}catch(e){flash=e.message}paint()});c.append(bt)}f.append(c)});
@@ -1102,12 +1158,13 @@ function loadErr(){const d=h("div","load");d.append(h("p","","We could not load 
 async function route(keep){const id=++rid;clearInterval(timer);const y=scrollY,hs=location.hash.replace(/^#\/?/,"").split("/"),k=hs[0];
 if(!keep&&k!=="about"&&ready&&Date.now()-last>3e4)refresh().then(ch=>{if(ch&&id===rid)route(true)});
 if(!ready&&k!=="about"){app.replaceChildren(loadView(fail));await refresh();if(id!==rid)return;if(!ready){app.replaceChildren(loadErr());hideBoot();return}}
-let v,n="home";try{
-if(k==="b"){const b=S.biz.find(x=>x.id===hs[1]);if(b){v=biz(b);n="b";document.title=b.name+" | CYBERJAY Holdings"}}
+let v,n="home",SO=null;try{
+if(k==="s"){const b=S.biz.find(x=>x.id===hs[1]&&!x.hidden&&x.approved);if(b&&soloOk(b)){v=site(b);n="s";SO=b;document.title=b.name}else if(b){location.replace(location.pathname+location.search+"#/b/"+encodeURIComponent(hs[1]));return}}
+else if(k==="b"){const b=S.biz.find(x=>x.id===hs[1]);if(b){v=biz(b);n="b";document.title=b.name+" | CYBERJAY Holdings"}}
 else if(k==="about"){v=about();n="about"}else if(k==="how"){v=how(hs[1]);n="how"}else if(k==="chamber"){v=chamber();n="chamber"}else if(k==="join"){v=join();n="join"}else if(k==="terms"){v=terms();n="terms"}else if(k==="privacy"){v=privacy();n="privacy"}
 if(!v){v=home();n="home"}if(n==="home")document.title="CYBERJAY Holdings | Businesses & Marketplace";
-app.replaceChildren(v)}catch(err){console.error(err);const m=h("div","card");m.append(h("h3","","This page could not load"),h("p","mut","Please refresh the page. If it keeps happening, send this message to support: "+String(err&&err.message||err).slice(0,160)));app.replaceChildren(m);hideBoot();return}
-if(!keep){app.classList.remove("pg");void app.offsetWidth;app.classList.add("pg");CJL.nav()}document.querySelectorAll("#menu a").forEach(a=>a.classList.toggle("on",a.dataset.r===n));track(n,n==="b"?hs[1]:"");
+document.body.classList.toggle("solo",!!SO);soAcc=SO?SO.brand:"";applyPf();app.replaceChildren(v)}catch(err){console.error(err);const m=h("div","card");m.append(h("h3","","This page could not load"),h("p","mut","Please refresh the page. If it keeps happening, send this message to support: "+String(err&&err.message||err).slice(0,160)));app.replaceChildren(m);hideBoot();return}
+if(!keep){app.classList.remove("pg");void app.offsetWidth;app.classList.add("pg");CJL.nav()}document.querySelectorAll("#menu a").forEach(a=>a.classList.toggle("on",a.dataset.r===n));track(n==="s"?"b":n,n==="b"||n==="s"?hs[1]:"");
 if(keep)scrollTo({top:y,behavior:"instant"});else{scrollTo({top:0,behavior:"instant"});$("#pan").hidden=true}hideBoot()}
 document.addEventListener("click",e=>{const t=e.target.closest("[data-scroll]");if(t){const el=document.getElementById(t.dataset.scroll);if(el)el.scrollIntoView({behavior:"smooth"})}});
 $("#yr").textContent=new Date().getFullYear();$(".foot .wrap").prepend(soc2());
