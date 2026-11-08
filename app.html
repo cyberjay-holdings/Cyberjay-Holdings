@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-gyMfP263Ai+KgbiY1DxhBqlOSuESV2kzgyIISUCzz5Q=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-WKPfXx8N/qU1EMxyhVqI9cGxW1ISDabaEZkY1hkBbtA=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q4rabgutEGyFBCEN1PkYwPha6Mw37olKC9ZAJexPrew=' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js; style-src 'sha256-xD0AWd/Tufi1OudqxGv8Hi/q11vT1VHqoHXL/WMle8E=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://hzfkjqmhpalmybaqsdql.supabase.co; connect-src https://hzfkjqmhpalmybaqsdql.supabase.co wss://hzfkjqmhpalmybaqsdql.supabase.co; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#0a0a0b">
 <title>CYBERJAY Holdings | Businesses &amp; Marketplace</title>
@@ -274,7 +274,7 @@ details.hw-q{border:1px solid var(--line);border-radius:18px;background:var(--ca
 .pwrap{position:relative;display:block}.pwrap input{width:100%;padding-right:3.2rem}.pweye{position:absolute;right:.45rem;top:50%;transform:translateY(-50%);width:2.4rem;height:2.4rem;border:0;border-radius:50%;background:transparent;color:var(--mut);display:grid;place-items:center;cursor:pointer}.pweye:hover,.pweye:focus-visible{color:var(--tx)}
 .ephs{display:flex;flex-wrap:wrap;gap:.5rem}.eph{position:relative;display:inline-block}.eph img{width:96px;height:96px;object-fit:cover;border-radius:16px;display:block}.eph button{position:absolute;padding:.1rem .55rem;font-size:.75rem;line-height:1.4;min-width:0;border-radius:99px}.eph .x{top:4px;right:4px}.eph .cv{bottom:4px;left:4px}
 .gal.svg3{grid-template-columns:repeat(auto-fill,minmax(min(100%,440px),1fr));gap:1.8rem}.it.svc{display:block;padding:0;border-radius:30px}.it.svc .pic,.it.svc .sld{aspect-ratio:5/4}.it.svc .inf h4{font-size:1.25rem}
-.rpt{margin-top:1.4rem}</style>
+.rpt{margin-top:1.4rem}.wlogo{width:4.2rem;height:4.2rem;border-radius:50%;background:var(--ac);color:var(--on);display:grid;place-items:center;font-weight:700;font-size:1.4rem;margin:1.2rem 0 .9rem;box-shadow:0 0 0 6px color-mix(in srgb,var(--ac) 22%,transparent)}.wnote{max-width:40rem;margin:1.1rem 0 .4rem;padding:.9rem 1.2rem;border-radius:20px;border:1px solid var(--line);border-left:4px solid var(--ac);background:color-mix(in srgb,var(--card) 72%,transparent);color:var(--mut);line-height:1.55}.wfacts{display:flex;flex-wrap:wrap;gap:.5rem;margin:.9rem 0 1.1rem}</style>
 </head>
 <body>
 <!-- ============ EDIT YOUR WORDS HERE ============
@@ -620,8 +620,11 @@ const n=h("div","inf");n.append(h("h4","",x.n),h("span","pr","From "+kes(x.p)),h
 n.append(ext(wa(b,"Hello "+b.name+", I would like to book an appointment for: "+x.n+" (from "+kes(x.p)+", "+(x.dur||"duration to confirm")+"). Please share your available dates and times."),"Book an appointment for "+x.n+" on WhatsApp","wa",T("book"," Book Appointment"),"btn p"));c.append(n);return c}
 function biz(b){const f=document.createDocumentFragment(),s=h("section","hero"),w=h("div","wrap");
 const back=h("a","chip",T("back","\u2190 All businesses"));back.href="#/";
-w.append(back,h("h1","",b.name),...(b.verified?[vb()]:[]),h("p","eyebrow",b.tag),h("p","lead",b.sells));
-const r=h("div","row");r.append(contact(b,"Hello "+b.name+", I would like to enquire."));w.append(r);
+const fn1=String(b.ceo||"").trim().split(/\s+/)[0],ini=String(b.name||"").trim().split(/\s+/).map(x=>x.replace(/[^A-Za-z0-9]/g,"")).filter(Boolean).slice(0,2).map(x=>x[0].toUpperCase()).join("")||"\u2022";
+w.append(back,h("div","wlogo",ini),h("p","eyebrow",T("welcomeTo","Karibu \u00b7 Welcome to")),h("h1","",b.name),...(b.verified?[vb()]:[]),h("p","eyebrow",b.tag),h("p","lead",b.sells));
+w.append(h("p","wnote","We are glad you stopped by. Look around, choose what you like and chat with "+(fn1||"us")+" directly on WhatsApp. Your message goes straight to the owner."));
+const fc=h("div","wfacts");[b.loc,b.hrs&&"Open "+b.hrs,b.since&&"Since "+b.since].filter(Boolean).forEach(t=>fc.append(h("span","chip",t)));if(fc.children.length)w.append(fc);
+const r=h("div","row");r.append(ext(wa(b,"Hello "+b.name+", I would like to enquire."),"Chat with "+b.name+" on WhatsApp","wa"," Chat on WhatsApp","btn p"));if(b.plan!=="free")r.append(ext(igu(b),b.name+" on Instagram","ig"," Instagram","btn g"));w.append(r);
 const sb=h("div","sub");[[T("navServices","Services"),"svc"],[T("navGallery","Gallery"),"gal"]].forEach(([l,id])=>{const x=h("button","btn g",l);x.dataset.scroll=id;sb.append(x)});w.append(sb);s.append(w);
 const s1=h("section","sheet");s1.id="svc";const w1=h("div","wrap"),d=h("div","card det");
 [[T("dBusiness","Business"),b.name],[T("dCeo","CEO"),b.ceo],[T("dCategory","Category"),b.tag],[T("dLocation","Location"),b.loc],[T("dOpen","Open"),b.hrs],[T("dSince","Since"),b.since]].forEach(([k,v])=>{const e=h("div");e.append(h("span","mut",k),h("b","",v));d.append(e)});
